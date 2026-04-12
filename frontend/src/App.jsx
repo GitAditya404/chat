@@ -46,7 +46,8 @@ const App = () => {
   function formatTime(date){
       return date.toLocaleTimeString([], {
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
+        hour12: true
       });
     }
 
@@ -57,7 +58,14 @@ const App = () => {
             <div className='border-2  border-amber-500 m-7'>
               {message.map((e,i) => {
                 return <div className='m-2 border flex  border-red-500'>
-                    <span className='border-2 rounded bg-white  p-3 text-black' key={i}>{e.msg} {formatTime(e.time)}</span>
+                 <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
+                    <span className='pr-12'>{e.msg}</span>
+
+                    <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
+                      {formatTime(e.time)}
+                    </span>
+                  </div>
+                    
                 </div>
               })}
             </div>
@@ -68,7 +76,13 @@ const App = () => {
               <div className='border-2  border-amber-500 m-7'>
                 {sentMsg.map((e,i) => {
                   return <div className='m-2 border flex justify-end'>
-                    <span className='border-2 rounded  bg-white  p-3 text-black' key={i}>{e.msg} {formatTime(e.time)} </span>
+                                     <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
+                    <span className='pr-12'>{e.msg}</span>
+
+                    <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
+                      {formatTime(e.time)}
+                    </span>
+                  </div>
                     </div>
                 })}
               </div>
