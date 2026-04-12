@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { useState,useRef } from 'react'
 
 const App = () => {
-  const [message , setMessage] = useState(['hi there' , 'hello there','how are you all , good'])
-  const [sentMsg , setSentmsg] = useState(['i am good ', 'hows your day'])
+  // const [message , setMessage] = useState([{msg:'hi there', time:new Date()},{msg:'hello', time:new Date()}])
+  const [message , setMessage] = useState([])
+  const [sentMsg , setSentmsg] = useState([])
 
   const wsRef = useRef()
   const inputRef = useRef(null)
@@ -13,10 +14,12 @@ const App = () => {
     wsRef.current = ws
 
     ws.onmessage = (event) => {    //message from server->client
-      setMessage(m => [...m, event.data])
+      const parsedMsg = JSON.parse(event.data);
+      const value  = {"msg" : parsedMsg.msg , "time" : new Date(parsedMsg.time)} // b/c date has become string so changed it to new Date type
+      setMessage(m => [...m,value])
     }
 
-    ws.onopen = () => {   // when websocket connectn has been established with the server ,  run this fn
+    ws.onopen = () => {   // when websocket connectn has been established with the server , run this fn
     ws.send(JSON.stringify({
       type : "join",
       payload : {
@@ -28,35 +31,44 @@ const App = () => {
 
   function clickHandler(){
     const msg = inputRef.current.value;
-    setSentmsg([...sentMsg,msg])
+
+    const newMsg = {"msg" : msg, "time" : new Date()}
+    setSentmsg([...sentMsg,newMsg])
 
     wsRef.current.send(JSON.stringify({
       type :'chat',
       payload: {
-        message : msg
+        msg : msg
       }
     }))
   }
 
+  function formatTime(date){
+      return date.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
   return <>
     <div className=' border-2 h-screen bg-black  '>
         <div className='flex border-2 h-[90vh]'>
-          <div className='LEFT w-1/2  border bg-black'>
+          <div className='LEFT-RECEIVED w-1/2  border bg-black'>
             <div className='border-2  border-amber-500 m-7'>
               {message.map((e,i) => {
                 return <div className='m-2 border flex  border-red-500'>
-                    <span className='border-2 rounded bg-white  p-3 text-black' key={i}>{e}</span>
+                    <span className='border-2 rounded bg-white  p-3 text-black' key={i}>{e.msg} {formatTime(e.time)}</span>
                 </div>
               })}
             </div>
 
           </div>
 
-          <div className='RIGHT w-1/2 bg-rose-500'>
+          <div className='RIGHT-SENT w-1/2 bg-rose-500'>
               <div className='border-2  border-amber-500 m-7'>
                 {sentMsg.map((e,i) => {
                   return <div className='m-2 border flex justify-end'>
-                    <span className='border-2 rounded  bg-white  p-3 text-black' key={i}>{e}</span>
+                    <span className='border-2 rounded  bg-white  p-3 text-black' key={i}>{e.msg} {formatTime(e.time)} </span>
                     </div>
                 })}
               </div>

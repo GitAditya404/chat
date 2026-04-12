@@ -1,12 +1,14 @@
 import { WebSocketServer } from "ws"
-const wss = new WebSocketServer({port:8000})  
+const wss = new WebSocketServer({port:8080})  
 
     let allSocket = {}
 
     wss.on("connection" , (socket) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
         console.log('user Connected')
+
         socket.on("message" , (msg) => {
             const parsedMsg = JSON.parse(msg)  // since msg that is coming is string u need to conver it to obj
+
             if(parsedMsg.type === 'join')
             {
                 const roomId = parsedMsg.payload.roomId;
@@ -27,9 +29,16 @@ const wss = new WebSocketServer({port:8000})
                     return console.log('room doesnt exist')
                 
                 const clients = allSocket[roomId]
+
+                const msgWithTime = {
+                    msg: parsedMsg.payload.msg,
+                    time : new Date()
+                }
+
                 clients.forEach((c) => {
-                    if(c!=socket)
-                        c.send(parsedMsg.payload.message)
+                    if(c!=socket){
+                        c.send(JSON.stringify(msgWithTime))
+                    }
                 })   
             }
         })
