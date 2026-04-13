@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
 mongoose.connect('mongodb://127.0.0.1/chat',{
      serverSelectionTimeoutMS: 5000
@@ -11,4 +11,4 @@ mongoose.connect('mongodb://127.0.0.1/chat',{
     process.exit(1)
 })
 
-module.exports = mongoose.connection
+export default mongoose.connection
