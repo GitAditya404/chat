@@ -1,9 +1,11 @@
 import { WebSocketServer } from "ws"
 import db  from'./config/db.js'
 import express from 'express'
+import cookieParser from "cookie-parser"
 import {loginUser, registerUser} from './controllers/authController.js'
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 
 
 app.get('/', (req,res)=> {
