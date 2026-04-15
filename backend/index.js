@@ -6,8 +6,12 @@ const app = express()
 app.get('/', (req,res)=> {
     res.send('hello ')
 })
-app.listen(3000)
 
+app.get('/signup', (req,res) => {
+    res.send('account created')
+})
+
+app.listen(3000)
 // const wss = new WebSocketServer({port:8080})  
 
 //     let allSocket = {}
