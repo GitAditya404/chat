@@ -1,7 +1,7 @@
 import { WebSocketServer } from "ws"
 import db  from'./config/db.js'
 import express from 'express'
-import {registerUser} from './controllers/authController.js'
+import {loginUser, registerUser} from './controllers/authController.js'
 const app = express()
 app.use(express.json())
 
@@ -11,6 +11,7 @@ app.get('/', (req,res)=> {
 })
 
 app.post('/signup',registerUser)
+app.post('/login',loginUser)
 
 app.listen(3000)
 // const wss = new WebSocketServer({port:8080})  
