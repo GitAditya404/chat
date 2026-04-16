@@ -1,5 +1,6 @@
 import userModel from '../models/userModel.js'
 import bcrypt from 'bcrypt'
+import generateToken from '../utils/generateToken.js';
 
 export const registerUser = async  (req,res) => {
 
@@ -18,6 +19,8 @@ export const registerUser = async  (req,res) => {
                 email : email,
                 password : hash
             })
+            const token  = generateToken(email)
+            res.cookie("token",token)
             res.send(createdUser)
 
         });
@@ -27,6 +30,7 @@ export const registerUser = async  (req,res) => {
         console.log('error' + e)
     }
 }
+
 
 export const loginUser = async (req,res) => {
     const {email,password} = req.body;
@@ -39,6 +43,8 @@ export const loginUser = async (req,res) => {
         if(!result)
             return res.status(404).send("Password Incorrect")
         
-        res.send(user)
+        const token = generateToken(email)
+        res.cookie("token" , token)
+        res.send('cookie stored')
     });
 }

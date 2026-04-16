@@ -9,7 +9,7 @@ app.use(cookieParser())
 
 
 app.get('/', (req,res)=> {
-    res.send('hello ')
+
 })
 
 app.post('/signup',registerUser)
