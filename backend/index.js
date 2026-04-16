@@ -3,13 +3,14 @@ import db  from'./config/db.js'
 import express from 'express'
 import cookieParser from "cookie-parser"
 import {loginUser, registerUser} from './controllers/authController.js'
+import isLoggedIn from "./middlewares/isLoggedIn.js"
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
 
-app.get('/', (req,res)=> {
-
+app.get('/',isLoggedIn ,(req,res)=> {
+    res.send(req.user)
 })
 
 app.post('/signup',registerUser)
