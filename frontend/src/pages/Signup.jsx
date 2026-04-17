@@ -1,5 +1,6 @@
 import { useRef } from "react"
 import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
 
 const Signup = () => {
 
@@ -7,6 +8,7 @@ const Signup = () => {
     const passwordRef = useRef(null)
     const emailRef = useRef(null)
     
+    const navigate = useNavigate()
 
     async  function clickHandler() {
 
@@ -17,8 +19,7 @@ const Signup = () => {
         }, 
         {withCredentials:true}  // it allows cross-origin http request to include sensitive info like cookie
     );
-
-        console.log(resp.data)
+        navigate('/');
     }
 
 

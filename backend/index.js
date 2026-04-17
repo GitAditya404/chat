@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser"
 import {loginUser, registerUser} from './controllers/authController.js'
 import isLoggedIn from "./middlewares/isLoggedIn.js"
 import cors from 'cors'
+import roomRoute from './routes/roomRoute.js'
+import roomModel from './models/roomModel.js'
 
 const app = express()
 app.use(express.json())
@@ -15,8 +17,9 @@ app.use(cors({
   credentials: true
 }));
 
-app.get('/',isLoggedIn ,(req,res)=> {
-    res.send(req.user)
+app.get('/',isLoggedIn , (req,res) => {
+    const rooms = roomModel.find({members:req.user_id})
+    res.send(rooms)
 })
 
 app.post('/signup',registerUser)

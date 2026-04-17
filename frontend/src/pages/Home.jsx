@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
+import axios from 'axios'
 
 const Home = () => {
 
-  useEffect(() => {
-    fetch()
+  const [rooms ,setRooms] = useState(null)
+  useEffect( () => {
+
+    async function fetchData(){
+      const resp = await axios.get('http://localhost:3000/',
+        {withCredentials: true}
+      )
+      // console.log(resp.data)
+      setRooms(resp.data)
+    }
+    fetchData();
   },[])
 
   return (
@@ -18,7 +28,9 @@ const Home = () => {
                 <button className='border ml-auto rounded bg-blue-600 text-white p-2'>Profile</button>
             </div>
             <div className='border-4 flex-1 bg-red-600 '>
-                    
+               { rooms.map((room) => {
+                    <h1>room</h1>
+                })}    
             </div>
 
         </div>
