@@ -1,4 +1,27 @@
+import { useRef } from "react"
+import axios from 'axios'
+
 const Signup = () => {
+
+    const nameRef = useRef(null)
+    const passwordRef = useRef(null)
+    const emailRef = useRef(null)
+    
+
+    async  function clickHandler() {
+
+        const resp = await axios.post("http://localhost:3000/signup",{
+            fullname : nameRef.current.value ,
+            email :emailRef.current.value , 
+            password : passwordRef.current.value
+        }, 
+        {withCredentials:true}  // it allows cross-origin http request to include sensitive info like cookie
+    );
+
+        console.log(resp.data)
+    }
+
+
     return <>
         <div className="w-full flex h-screen bg-[#2C2638] gap-5  text-white p-5">
 
@@ -14,12 +37,15 @@ const Signup = () => {
                     <a className="text-blue-500 underline ml-2" href="">Log in </a>
                 </div>
 
-                <form className="w-full  mt-8" >
-                    <input className="px-3 py-2  w-3/5 outline-none bg-[#3C364C] border-2 border-zinc-800 rounded-md" type="text" name="fullname" placeholder="Full name" />
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    clickHandler();
+                }} className="w-full  mt-8" >
+                    <input ref={nameRef} className="px-3 py-2  w-3/5 outline-none bg-[#3C364C] border-2 border-zinc-800 rounded-md" type="text" name="fullname" placeholder="Full name" />
 
-                    <input className="px-3 py-2 mt-6  w-3/5 outline-none bg-[#3C364C] border-2 border-zinc-800 rounded-md" type="text" name="email" placeholder="email" />
+                    <input ref={emailRef} className="px-3 py-2 mt-6  w-3/5 outline-none bg-[#3C364C] border-2 border-zinc-800 rounded-md" type="text" name="email" placeholder="email" />
 
-                    <input className="px-3  py-2 w-3/5 mt-6 outline-none bg-[#3C364C] border-2 border-zinc-800 rounded-md" type="text" name="password" placeholder="password" />
+                    <input ref={passwordRef} className="px-3  py-2 w-3/5 mt-6 outline-none bg-[#3C364C] border-2 border-zinc-800 rounded-md" type="text" name="password" placeholder="password" />
 
                     <button type="submit" className="px-3 block mt-8 py-2 bg-blue-500 rounded-md">Sign Up</button>
                 </form>

@@ -20,7 +20,13 @@ export const registerUser = async  (req,res) => {
                 password : hash
             })
             const token  = generateToken(email)
-            res.cookie("token",token)
+            // res.cookie("token",token)
+            res.cookie("token", token, {
+                httpOnly: true,
+                sameSite: "lax",   
+                secure: false      // true ONLY in HTTPS (production)
+            });
+            console.log('token created')
             res.send(createdUser)
 
         });

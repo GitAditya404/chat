@@ -4,10 +4,16 @@ import express from 'express'
 import cookieParser from "cookie-parser"
 import {loginUser, registerUser} from './controllers/authController.js'
 import isLoggedIn from "./middlewares/isLoggedIn.js"
+import cors from 'cors'
+
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
 
 app.get('/',isLoggedIn ,(req,res)=> {
     res.send(req.user)
