@@ -16,15 +16,20 @@ app.use(cors({
   credentials: true
 }));
 
+app.post('/signup',registerUser)
+app.post('/login',loginUser)
+
 app.get('/',isLoggedIn ,async (req,res) => {
     const rooms = await roomModel.find({members:req.user._id})
     res.send(rooms)
     console.log(rooms)
 })
 
+app.get('/me' , isLoggedIn , (req,res) => {
+  res.status(200).send('user verified')
+})
 
-app.post('/signup',registerUser)
-app.post('/login',loginUser)
+
 
 app.post('/room/join', isLoggedIn,async (req,res) => {
 
