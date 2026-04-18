@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser"
 import {loginUser, registerUser} from './controllers/authController.js'
 import isLoggedIn from "./middlewares/isLoggedIn.js"
 import cors from 'cors'
-import roomRoute from './routes/roomRoute.js'
 import roomModel from './models/roomModel.js'
 
 const app = express()
@@ -17,13 +16,32 @@ app.use(cors({
   credentials: true
 }));
 
-app.get('/',isLoggedIn , (req,res) => {
-    const rooms = roomModel.find({members:req.user_id})
+app.get('/',isLoggedIn ,async (req,res) => {
+    const rooms = await roomModel.find({members:req.user_id})
     res.send(rooms)
+    console.log(rooms)
 })
+
 
 app.post('/signup',registerUser)
 app.post('/login',loginUser)
+
+app.post('/room/join', isLoggedIn,async (req,res) => {
+
+  try{
+    let room  = await roomModel.create({
+      name:req.body.name,
+      members : [req.user._id]
+    })
+
+    return res.status(200).send('joined' + req.body.name+'successfully')
+  }
+
+  catch(e){
+    res.status(500).send('unable to create join room')
+  }
+
+})
 
 app.listen(3000)
 // const wss = new WebSocketServer({port:8080})  

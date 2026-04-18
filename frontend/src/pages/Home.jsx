@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import { useRef } from 'react'
 
 const Home = () => {
+  const nameRef = useRef(null)
 
   const [rooms ,setRooms] = useState(null)
   useEffect( () => {
@@ -16,6 +18,16 @@ const Home = () => {
     }
     fetchData();
   },[])
+
+  async function joinClick(){
+    const resp = await axios.post('http://localhost:3000/room/join',
+      {
+        name: nameRef.current.value
+      },
+      {withCredentials: true}
+    )
+    console.log(resp.data)
+  }
 
   return (
     <>
@@ -44,8 +56,8 @@ const Home = () => {
 
                   <div className='ml-5'>
                     <p className='text-xl mt-9'>Room Name</p>
-                    <input className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
-                    <button className='border mt-4 text-xl rounded bg-blue-600 text-white py-3 px-8' type="submit">Join</button>
+                    <input ref={nameRef} className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
+                    <button onClick={joinClick} className='border mt-4 text-xl rounded bg-blue-600 text-white py-3 px-8' >Join</button>
                   </div>
 
                 </div>

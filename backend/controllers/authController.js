@@ -21,11 +21,7 @@ export const registerUser = async  (req,res) => {
             })
             const token  = generateToken(email)
             // res.cookie("token",token)
-            res.cookie("token", token, {
-                httpOnly: true,
-                sameSite: "lax",   
-                secure: false      // true ONLY in HTTPS (production)
-            });
+            res.cookie("token", token);
             console.log('token created')
             res.send(createdUser)
 
