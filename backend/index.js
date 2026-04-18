@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 app.get('/',isLoggedIn ,async (req,res) => {
-    const rooms = await roomModel.find({members:req.user_id})
+    const rooms = await roomModel.find({members:req.user._id})
     res.send(rooms)
     console.log(rooms)
 })
