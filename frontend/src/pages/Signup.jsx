@@ -18,7 +18,8 @@ const Signup = () => {
             password : passwordRef.current.value
         }, 
         {withCredentials:true}  // it allows cross-origin http request to include sensitive info like cookie
-    );
+        );
+
         navigate('/');
     }
 
