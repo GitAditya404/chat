@@ -8,15 +8,17 @@ const Home = () => {
   const createRef = useRef(null)
 
   const [rooms ,setRooms] = useState([])
-  useEffect( () => {
-
-    async function fetchData(){
+  
+  async function fetchData(){
       const resp = await axios.get('http://localhost:3000/',
         {withCredentials: true}
       )
       // console.log(resp.data)
       setRooms(resp.data)
-    }
+  }
+
+
+  useEffect( () => {
     fetchData();
   },[])
 

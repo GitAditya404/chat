@@ -50,6 +50,21 @@ app.post('/room/join', isLoggedIn,async (req,res) => {
 
 })
 
+app.post('/room/create' , isLoggedIn ,async (req,res) =>{
+    try{
+      const {name} = req.body;
+      const room = await roomModel.create({
+        name:name,
+        members : [req.user._id]
+      })
+      return res.status(200).send('created '+name +' successfully')
+    }
+
+    catch(e){
+      return res.status(500).send('unable to create join room')
+    }
+})
+
 app.listen(3000)
 // const wss = new WebSocketServer({port:8080})  
 
