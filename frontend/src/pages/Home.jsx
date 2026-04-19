@@ -3,12 +3,13 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { useRef } from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import {rooms,fetchData} from '../../customHooks/useRooms.jsx'
+import useRooms from '../../customHooks/useRooms.jsx'
 
 const Home = () => {
   const joinRef = useRef(null)
   const createRef = useRef(null)
 
+  const {fetchData} = useRooms() 
 
   async function joinClick(){
     const resp = await axios.post('http://localhost:3000/room/join',
@@ -32,11 +33,13 @@ const Home = () => {
     fetchData()
   }
 
+  useEffect(() =>{
+    fetchData()
+  },[])
+
   return (
     <>
     <div className='OUTER flex w-full text-white h-screen bg-black'>
-
-          <Sidebar rooms={rooms}/>
 
         <div className='RIGHT border-l border-[#2c2d2d]  bg-[#161717]    w-2/3'>
               <div className='ml-52 mt-20'>
