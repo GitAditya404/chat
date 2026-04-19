@@ -30,20 +30,22 @@ app.get('/me' , isLoggedIn , (req,res) => {
 })
 
 
-
 app.post('/room/join', isLoggedIn,async (req,res) => {
 
   try{
-    let room  = await roomModel.create({
-      name:req.body.name,
-      members : [req.user._id]
-    })
+    const {name} = req.body;
+    const room  = await roomModel.findOneAndUpdate({name},
+       {$addToSet :{members: req.user._id}},
+      {new:true}
+    )
+    if(!room)
+      res.status(404).send('Room does not exist')
 
-    return res.status(200).send('joined' + req.body.name+'successfully')
+    return res.status(200).send('joined ' + req.body.name+' successfully')
   }
-
+  
   catch(e){
-    res.status(500).send('unable to create join room')
+    return res.status(500).send('Server error')
   }
 
 })
