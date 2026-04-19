@@ -4,7 +4,8 @@ import axios from 'axios'
 import { useRef } from 'react'
 
 const Home = () => {
-  const nameRef = useRef(null)
+  const joinRef = useRef(null)
+  const createRef = useRef(null)
 
   const [rooms ,setRooms] = useState([])
   useEffect( () => {
@@ -22,11 +23,23 @@ const Home = () => {
   async function joinClick(){
     const resp = await axios.post('http://localhost:3000/room/join',
       {
-        name: nameRef.current.value
+        name: joinRef.current.value
       },
       {withCredentials: true}
     )
     console.log(resp.data)
+    fetchData()
+  }
+
+  async function createClick(){
+    const resp = await axios.post('http://localhost:3000/room/create',
+      {
+        name: createRef.current.value
+      },
+      {withCredentials: true}
+    )
+    console.log(resp.data)
+    fetchData()
   }
 
   return (
@@ -63,9 +76,9 @@ const Home = () => {
 
         </div>
 
-        <div className='RIGHT border-l border-[#2c2d2d] flex justify-center bg-[#161717] items-center   w-2/3'>
-
-                <div className='bg-[#2E2F2F] rounded-xl w-[40vw] h-60 border-2 text-white '>
+        <div className='RIGHT border-l border-[#2c2d2d]  bg-[#161717]    w-2/3'>
+              <div className='ml-52 mt-20'>
+                  <div className='bg-[#2E2F2F] rounded-xl w-[40vw] h-60 border-2 text-white '>
 
                   <div className='text-center '>
                     <p className='text-4xl font-bold underline'>Join a Room</p>
@@ -73,11 +86,28 @@ const Home = () => {
 
                   <div className='ml-5 '>
                     <p className='text-xl text-red-500  mt-9'>Room Name :</p>
-                    <input ref={nameRef} className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
+                    <input ref={joinRef} className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
                     <button onClick={joinClick} className=' mt-4 text-xl rounded bg-blue-600 text-white py-3 px-8' >Join</button>
                   </div>
 
                 </div>
+
+                <div className='bg-[#2E2F2F] mt-14 rounded-xl w-[40vw] h-60 border-2 text-white '>
+
+                  <div className='text-center '>
+                    <p className='text-4xl font-bold underline'>Create a Room</p>
+                  </div>
+
+                  <div className='ml-5 '>
+                    <p className='text-xl text-red-500  mt-9'>Room Name :</p>
+                    <input ref={createRef} className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
+                    <button onClick={createClick} className=' mt-4 text-xl rounded bg-blue-600 text-white py-3 px-8' >Create</button>
+                  </div>
+
+                </div>
+              </div>
+
+
         </div>
     </div>
     </>
