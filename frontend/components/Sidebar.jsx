@@ -1,6 +1,12 @@
-
+import { useNavigate } from "react-router-dom"
 
 const Sidebar = ({rooms}) => {
+
+  const navigate = useNavigate()
+
+   function nameClickHandler(id){
+      navigate(`/room/${id}`)
+    }
 
     return (
         <>
@@ -17,6 +23,7 @@ const Sidebar = ({rooms}) => {
                 rooms.map((room) => (
                   <div
                     key={room._id}
+                    onClick={() => nameClickHandler(room._id)}
                     className='flex items-center gap-3 px-4 py-3 rounded-lg bg-[#1E1F1F] hover:bg-[#2A2B2B] cursor-pointer transition-all duration-200'
                   >
                   
