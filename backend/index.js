@@ -22,7 +22,7 @@ app.post('/login',loginUser)
 app.get('/',isLoggedIn ,async (req,res) => {
     const rooms = await roomModel.find({members:req.user._id})
     res.send(rooms)
-    console.log(rooms)
+    // console.log(rooms)
 })
 
 app.get('/me' , isLoggedIn , (req,res) => {

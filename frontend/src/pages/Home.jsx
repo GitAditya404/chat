@@ -33,10 +33,6 @@ const Home = () => {
     fetchData()
   }
 
-  useEffect(() =>{
-    fetchData()
-  },[])
-
   return (
     <>
     <div className='OUTER flex w-full text-white h-screen bg-black'>
