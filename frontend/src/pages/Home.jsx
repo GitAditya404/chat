@@ -19,7 +19,7 @@ const Home = () => {
       {withCredentials: true}
     )
     console.log(resp.data)
-    fetchData()
+    await fetchData()
   }
 
   async function createClick(){
@@ -30,7 +30,7 @@ const Home = () => {
       {withCredentials: true}
     )
     console.log(resp.data)
-    fetchData()
+    await fetchData()
   }
 
   return (

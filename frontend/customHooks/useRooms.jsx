@@ -9,6 +9,7 @@ const useRooms = () => {
             {withCredentials: true}
         )
         setRooms(resp.data)
+        console.log('fetch data ran')
     }
 
     return {rooms,fetchData}

@@ -1,11 +1,11 @@
-import { useEffect } from "react"
-import useRooms from "../../customHooks/useRooms"
+import { useEffect,useContext } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "../../components/Sidebar"
+import { RoomContext } from "../../context/RoomContext"
 
 const Layout = () => {
 
-    const { rooms, fetchData } = useRooms()
+    const {rooms,fetchData} = useContext(RoomContext)
 
     useEffect(() => {
         fetchData()

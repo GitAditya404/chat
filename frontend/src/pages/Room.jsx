@@ -6,7 +6,8 @@ const Room = () => {
       // const [message , setMessage] = useState([{msg:'hi there', time:new Date()},{msg:'hello', time:new Date()}])
   const [message , setMessage] = useState([])
   const [sentMsg , setSentmsg] = useState([])
-
+  
+  const {id} = useParams();
   const wsRef = useRef()
   const inputRef = useRef(null)
 
@@ -14,15 +15,8 @@ const Room = () => {
     const ws = new WebSocket('ws://localhost:8080')
     wsRef.current = ws
 
-    ws.onmessage = (event) => {    //message from server->client
-      const parsedMsg = JSON.parse(event.data);
-      const value  = {"msg" : parsedMsg.msg , "time" : new Date(parsedMsg.time)} // b/c date has become string so changed it to new Date type
-      setMessage(m => [...m,value])
-    }
-
     ws.onopen = () => {   // when websocket connectn has been established with the server , run this fn
 
-    const {id} = useParams();
 
     ws.send(JSON.stringify({
       type : "join",
@@ -31,6 +25,14 @@ const Room = () => {
       }
     }))
     }
+
+
+    ws.onmessage = (event) => {    //message from server->client
+      const parsedMsg = JSON.parse(event.data);
+      const value  = {"msg" : parsedMsg.msg , "time" : new Date(parsedMsg.time)} // b/c date has become string so changed it to new Date type
+      setMessage(m => [...m,value])
+    }
+
   },[])
 
   function clickHandler(){

@@ -2,9 +2,10 @@ import { createContext } from "react";
 import axios from "axios";
 import { useState } from "react";
 
-const RoomContext = createContext()
+export const RoomContext = createContext()
 
 export function RoomsProvider({children}){
+
     const [rooms, setRooms] = useState([])
 
     async function fetchData(){
@@ -13,13 +14,14 @@ export function RoomsProvider({children}){
                 withCredentials: true
             }
         )
-        setRooms(resp);
+        setRooms(resp.data);
     }
-      return (
-    <RoomsContext.Provider value={{ rooms, fetchData }}>
+
+    return (
+    <RoomContext.Provider value={{ rooms, fetchData }}>
       {children}
-    </RoomsContext.Provider>
-  );
-};
+    </RoomContext.Provider>
+  )
+}
     
 
