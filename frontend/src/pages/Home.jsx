@@ -43,7 +43,7 @@ const Home = () => {
 
         <div className='RIGHT border-l border-[#2c2d2d]  bg-[#161717]    w-2/3'>
               <div className='ml-52 mt-20'>
-                  <div className='bg-[#2E2F2F] rounded-xl w-[40vw] h-60 border-2 text-white '>
+                <div className='bg-[#2E2F2F] rounded-xl w-[40vw] h-60 border-2 text-white '>
 
                   <div className='text-center '>
                     <p className='text-4xl font-bold underline'>Join a Room</p>

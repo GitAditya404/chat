@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useRef ,useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 
 const Room = () => {
       // const [message , setMessage] = useState([{msg:'hi there', time:new Date()},{msg:'hello', time:new Date()}])
@@ -20,10 +21,13 @@ const Room = () => {
     }
 
     ws.onopen = () => {   // when websocket connectn has been established with the server , run this fn
+
+    const {id} = useParams();
+
     ws.send(JSON.stringify({
       type : "join",
       payload : {
-        roomId : "red"
+        roomId : id
       }
     }))
     }
