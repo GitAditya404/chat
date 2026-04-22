@@ -113,8 +113,9 @@ const wss = new WebSocketServer({port:8080})
                 })   
             }
         })
+        socket.on('close',() => {
+          const roomId = socket.room
+          allSocket[roomId] = allSocket[roomId].filter((x) => x!== socket)
+        })
 
-        // socket.on("disconnect", () => {
-        //     allSocket = allSocket.filter(x => x != socket)
-        // })
 })

@@ -17,13 +17,12 @@ const Room = () => {
 
     ws.onopen = () => {   // when websocket connectn has been established with the server , run this fn
 
-
-    ws.send(JSON.stringify({
-      type : "join",
-      payload : {
-        roomId : id
-      }
-    }))
+      ws.send(JSON.stringify({
+        type : "join",
+        payload : {
+          roomId : id
+        }
+      }))
     }
 
 
@@ -33,7 +32,13 @@ const Room = () => {
       setMessage(m => [...m,value])
     }
 
-  },[])
+    return () => {
+      setMessage([])
+      setSentmsg([])
+      ws.close()
+    }
+
+  },[id])
 
   function clickHandler(){
     const msg = inputRef.current.value;
