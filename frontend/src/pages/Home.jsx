@@ -1,15 +1,13 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState ,useContext, useRef, useEffect } from 'react'
 import axios from 'axios'
-import { useRef } from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import useRooms from '../../customHooks/useRooms.jsx'
+import { RoomContext } from '../../context/RoomContext.jsx'
 
 const Home = () => {
   const joinRef = useRef(null)
   const createRef = useRef(null)
 
-  const {fetchData} = useRooms() 
+  const {fetchData} = useContext(RoomContext)
 
   async function joinClick(){
     const resp = await axios.post('http://localhost:3000/room/join',

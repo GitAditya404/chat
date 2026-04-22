@@ -70,7 +70,7 @@ app.listen(3000)
                                   //WEBSOCKET SERVER
 const wss = new WebSocketServer({port:8080})  
 
-    let allSocket = {}
+  let allSocket = {}
 
     wss.on("connection" , (socket) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
         console.log('user Connected')
@@ -82,11 +82,12 @@ const wss = new WebSocketServer({port:8080})
             if(parsedMsg.type === 'join')
             {
                 const roomId = parsedMsg.payload.roomId;
-                if(!allSocket[roomId]){
+                if(!allSocket[roomId]){  // if room not present in allSocket ,create it
                     allSocket[roomId] = [];
                 }
+
                 allSocket[roomId].push(socket);
-                console.log('user joined')
+                console.log('user joined' + roomId)
                 socket.room = roomId  //attaching a room field in socket itself , so that later the room of the socket can be identified instantly
             }
 
@@ -94,7 +95,7 @@ const wss = new WebSocketServer({port:8080})
             {
                 const roomId = socket.room;
                 if(!roomId) // check if socket has a room 
-                    return console.log('user not in any room')
+                    return console.log('user not in any room' + roomId)
                 if(!allSocket[roomId])  // check if the room exist in our server
                     return console.log('room doesnt exist')
                 

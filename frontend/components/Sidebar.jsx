@@ -1,11 +1,13 @@
-import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { useNavigate,useParams  } from "react-router-dom"
 
 const Sidebar = ({rooms}) => {
 
   const navigate = useNavigate()
+  const {id} = useParams()
 
-   function nameClickHandler(id){
-      navigate(`/room/${id}`)
+   function nameClickHandler(roomId){
+      navigate(`/room/${roomId}`)
     }
 
     return (
@@ -24,7 +26,7 @@ const Sidebar = ({rooms}) => {
                   <div
                     key={room._id}
                     onClick={() => nameClickHandler(room._id)}
-                    className='flex items-center gap-3 px-4 py-3 rounded-lg bg-[#1E1F1F] hover:bg-[#2A2B2B] cursor-pointer transition-all duration-200'
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg bg-[#1E1F1F] hover:bg-[#2A2B2B] cursor-pointer transition-all duration-200 ${id ===room._id ? 'bg-amber-500 hover:bg-amber-500' : 'bg-[#1E1F1F]'}`}
                   >
                   
                     <div className='w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-bold'>
