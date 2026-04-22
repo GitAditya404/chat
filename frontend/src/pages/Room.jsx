@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useRef ,useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const Room = () => {
       // const [message , setMessage] = useState([{msg:'hi there', time:new Date()},{msg:'hello', time:new Date()}])
@@ -40,10 +41,19 @@ const Room = () => {
 
   },[id])
 
-  function clickHandler(){
+  async function clickHandler(){
     const msg = inputRef.current.value;
 
     const newMsg = {"msg" : msg, "time" : new Date()}
+
+    const resp = await axios.post('http://localhost:3000/msg/create',
+      {
+        roomId : id ,
+        content : msg 
+      },
+      {withCredentials : true}
+    )
+
     setSentmsg([...sentMsg,newMsg])
 
     wsRef.current.send(JSON.stringify({

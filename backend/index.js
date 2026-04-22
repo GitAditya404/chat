@@ -6,6 +6,7 @@ import {loginUser, registerUser} from './controllers/authController.js'
 import isLoggedIn from "./middlewares/isLoggedIn.js"
 import cors from 'cors'
 import roomModel from './models/roomModel.js'
+import messageModel from './models/messageModel.js'
 
 const app = express()
 app.use(express.json())
@@ -63,6 +64,19 @@ app.post('/room/create' , isLoggedIn ,async (req,res) =>{
     catch(e){
       return res.status(500).send('unable to create join room')
     }
+})
+
+app.post('/msg/create' , isLoggedIn ,async (req,res)=> {
+
+  const {roomId, content} = req.body;
+
+  await messageModel.create({
+    senderId: req.user,
+    roomId : roomId,
+    content : content,
+    timestamp : new Date()
+  })
+  return res.status(200).send('message saved in DB')
 })
 
 app.listen(3000)
