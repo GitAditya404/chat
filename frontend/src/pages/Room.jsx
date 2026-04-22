@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 const Room = () => {
-      // const [message , setMessage] = useState([{msg:'hi there', time:new Date()},{msg:'hello', time:new Date()}])
+      // const [message , setMessage] = useState([{content:'hi there', timestamp:new Date(),type : "received"},{content:'hello', timestamp:new Date(),type :"received"}])
   const [message , setMessage] = useState([])
   const [sentMsg , setSentmsg] = useState([])
   
@@ -19,7 +19,16 @@ const Room = () => {
         withCredentials : true
       }
     )
-    const data = resp.data
+    const data = resp.data.map((msg) => {
+      return {...msg,timestamp : new Date(msg.timestamp)}   //when data comes from backend ,json converts timestamp from new Date to string so change it back so FormatTime can work on it 
+    })
+
+    data.forEach((msg) => {
+      if(msg.type === 'sent')
+        setSentmsg(x => [...x,msg])
+      else
+        setMessage(x => [...x , msg])
+    })
   }
 
   useEffect(() => {
@@ -92,10 +101,10 @@ const Room = () => {
               {message.map((e,i) => {
                 return <div className='m-2 border flex  border-red-500'>
                  <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
-                    <span className='pr-12'>{e.msg}</span>
+                    <span className='pr-12'>{e.content}</span>
 
                     <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
-                      {formatTime(e.time)}
+                      {formatTime(e.timestamp)}
                     </span>
                   </div>
                     
@@ -110,10 +119,10 @@ const Room = () => {
                 {sentMsg.map((e,i) => {
                   return <div className='m-2 border flex justify-end'>
                                      <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
-                    <span className='pr-12'>{e.msg}</span>
+                    <span className='pr-12'>{e.content}</span>
 
                     <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
-                      {formatTime(e.time)}
+                      {formatTime(e.timestamp)}
                     </span>
                   </div>
                     </div>
