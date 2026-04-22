@@ -12,6 +12,16 @@ const Room = () => {
   const wsRef = useRef()
   const inputRef = useRef(null)
 
+  const fetchMsg = async () => {
+    const resp = await axios.get('http://localhost:3000/msg',
+      {
+        params : {roomId : id }, //data in get request is usually sent in params , also axios.get() only accepts 2 arguments ; so it is being sent like this
+        withCredentials : true
+      }
+    )
+    const data = resp.data
+  }
+
   useEffect(() => {
     const ws = new WebSocket('ws://localhost:8080')
     wsRef.current = ws
@@ -32,6 +42,8 @@ const Room = () => {
       const value  = {"msg" : parsedMsg.msg , "time" : new Date(parsedMsg.time)} // b/c date has become string so changed it to new Date type
       setMessage(m => [...m,value])
     }
+
+    fetchMsg()
 
     return () => {
       setMessage([])
