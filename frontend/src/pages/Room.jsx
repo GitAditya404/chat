@@ -20,7 +20,7 @@ const Room = () => {
       }
     )
     const data = resp.data.map((msg) => {
-      return {...msg,timestamp : new Date(msg.timestamp)}   //when data comes from backend ,json converts timestamp from new Date to string so change it back so FormatTime can work on it 
+      return {...msg,timestamp : new Date(msg.timestamp)}   //when data comes from backend ,json converts timestamp from new Date to string so change it back, so FormatTime can work on it 
     })
 
     data.forEach((msg) => {
@@ -48,7 +48,7 @@ const Room = () => {
 
     ws.onmessage = (event) => {    //message from server->client
       const parsedMsg = JSON.parse(event.data);
-      const value  = {"msg" : parsedMsg.msg , "time" : new Date(parsedMsg.time)} // b/c date has become string so changed it to new Date type
+      const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received"} // b/c date has become string so changed it to new Date type
       setMessage(m => [...m,value])
     }
 
@@ -65,7 +65,7 @@ const Room = () => {
   async function clickHandler(){
     const msg = inputRef.current.value;
 
-    const newMsg = {"msg" : msg, "time" : new Date()}
+    const newMsg = {"content" : msg, "timestamp" : new Date(), "type" : "sent"}
 
     const resp = await axios.post('http://localhost:3000/msg/create',
       {

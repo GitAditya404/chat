@@ -140,8 +140,8 @@ const wss = new WebSocketServer({port:8080})
                 const clients = allSocket[roomId]
 
                 const msgWithTime = {
-                    msg: parsedMsg.payload.msg,
-                    time : new Date()
+                    content: parsedMsg.payload.msg,
+                    timestamp : new Date()
                 }
 
                 clients.forEach((c) => {
