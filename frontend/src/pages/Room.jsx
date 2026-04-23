@@ -6,7 +6,7 @@ import axios from 'axios'
 const Room = () => {
       // const [message , setMessage] = useState([{content:'hi there', timestamp:new Date(),type : "received"},{content:'hello', timestamp:new Date(),type :"received"}])
   const [message , setMessage] = useState([])
-  const [sentMsg , setSentmsg] = useState([])
+  // const [sentMsg , setSentmsg] = useState([])
   
   const {id} = useParams();
   const wsRef = useRef()
@@ -19,16 +19,13 @@ const Room = () => {
         withCredentials : true
       }
     )
-    const data = resp.data.map((msg) => {
+    let data = resp.data.map((msg) => {
       return {...msg,timestamp : new Date(msg.timestamp)}   //when data comes from backend ,json converts timestamp from new Date to string so change it back, so FormatTime can work on it 
     })
 
-    data.forEach((msg) => {
-      if(msg.type === 'sent')
-        setSentmsg(x => [...x,msg])
-      else
-        setMessage(x => [...x , msg])
-    })
+    data  = data.sort((a,b) => a.timestamp - b.timestamp)
+    setMessage(data)
+
   }
 
   useEffect(() => {
@@ -56,7 +53,6 @@ const Room = () => {
 
     return () => {
       setMessage([])
-      setSentmsg([])
       ws.close()
     }
 
@@ -75,7 +71,7 @@ const Room = () => {
       {withCredentials : true}
     )
 
-    setSentmsg([...sentMsg,newMsg])
+    setMessage([...message,newMsg])
 
     wsRef.current.send(JSON.stringify({
       type :'chat',
@@ -95,30 +91,31 @@ const Room = () => {
 
   return <>
     <div className=' border-2 h-screen bg-black  '>
-        <div className='flex border-2 h-[90vh]'>
-          <div className='LEFT-RECEIVED w-1/2  border bg-black'>
-            <div className='border-2  border-amber-500 m-7'>
-              {message.map((e,i) => {
-                return <div className='m-2 border flex  border-red-500'>
-                 <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
-                    <span className='pr-12'>{e.content}</span>
+        <div className='border h-[90vh]'>
 
-                    <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
-                      {formatTime(e.timestamp)}
-                    </span>
-                  </div>
+          <div className='w-full  border bg-gray-300'>
+            <div className='border-2  border-amber-500 bg-blue-500 m-7'>
+              {message.map((e,i) => {
+                return <div className= {`m-2 flex border-red-500 ${e.type === "sent" ? "justify-end" : "justify-start"}`}>
+                          <div className='relative border-2 bg-amber-500 rounded  p-2 text-black '>
+                              <span className='pr-12'>{e.content}</span>
+
+                              <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
+                                {formatTime(e.timestamp)}
+                              </span>
+                          </div>
                     
-                </div>
+                    </div>
               })}
             </div>
 
           </div>
 
-          <div className='RIGHT-SENT w-1/2 bg-rose-500'>
+          {/* <div className='RIGHT-SENT w-1/2 bg-rose-500'>
               <div className='border-2  border-amber-500 m-7'>
                 {sentMsg.map((e,i) => {
                   return <div className='m-2 border flex justify-end'>
-                                     <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
+                            <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
                     <span className='pr-12'>{e.content}</span>
 
                     <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
@@ -129,7 +126,7 @@ const Room = () => {
                 })}
               </div>
 
-          </div>
+          </div> */}
         </div>
         <div className='ml-96 mr-96 h-16 text-white'>
           <div className='flex mt-2  '>
