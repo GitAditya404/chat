@@ -7,6 +7,7 @@ import isLoggedIn from "./middlewares/isLoggedIn.js"
 import cors from 'cors'
 import roomModel from './models/roomModel.js'
 import messageModel from './models/messageModel.js'
+import verifyUser from "./utils/verifyUser.js"
 
 const app = express()
 app.use(express.json())
@@ -92,7 +93,7 @@ app.get('/msg', isLoggedIn,async (req,res) => {
         content : msg.content,
         timestamp : msg.timestamp,
         type : "sent",
-        senderName : req.user.fullname
+        senderName : "you"
       }
     }
     else{
@@ -114,8 +115,16 @@ const wss = new WebSocketServer({port:8080})
 
   let allSocket = {}
 
-    wss.on("connection" , (socket) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
+    wss.on("connection" ,async (socket ,req) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
         console.log('user Connected')
+
+        // const token = req.cookies.token //this wont work here b/c this req does not pass through express cookie parser 
+        const cookies  = req.headers.cookie  // o/p -> token=abc123; theme=dark
+        const token = cookies?.split('; ')
+                      .find(row => row.startsWith('token='))
+                      ?.split('=')[1];
+
+        const user = await verifyUser(token)
 
         socket.on("message" , (msg) => {
             const parsedMsg = JSON.parse(msg)  // since msg that is coming is string u need to conver it to obj
@@ -145,6 +154,7 @@ const wss = new WebSocketServer({port:8080})
 
                 const msgWithTime = {
                     content: parsedMsg.payload.msg,
+                    senderName : user.fullname,
                     timestamp : new Date()
                 }
 

@@ -50,7 +50,7 @@ const Room = () => {
 
     ws.onmessage = (event) => {    //message from server->client
       const parsedMsg = JSON.parse(event.data);
-      const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received"} // b/c date has become string so changed it to new Date type
+      const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received" , "senderName" : parsedMsg.senderName} //changed date b/c date has become string so changed it to new Date type
       setMessage(m => [...m,value])
     }
 
@@ -64,26 +64,26 @@ const Room = () => {
   },[id])
 
   async function clickHandler(){
-    const msg = inputRef.current.value;
+      const msg = inputRef.current.value;
 
-    const newMsg = {"content" : msg, "timestamp" : new Date(), "type" : "sent"}
+      const newMsg = {"content" : msg, "timestamp" : new Date(), "type" : "sent" , "senderName" :"you"}
 
-    const resp = await axios.post('http://localhost:3000/msg/create',
-      {
-        roomId : id ,
-        content : msg 
-      },
-      {withCredentials : true}
-    )
+      const resp = await axios.post('http://localhost:3000/msg/create',
+        {
+          roomId : id ,
+          content : msg 
+        },
+        {withCredentials : true}
+      )
 
-    setMessage([...message,newMsg])
+      setMessage([...message,newMsg])
 
-    wsRef.current.send(JSON.stringify({
-      type :'chat',
-      payload: {
-        msg : msg
-      }
-    }))
+      wsRef.current.send(JSON.stringify({
+        type :'chat',
+        payload: {
+          msg : msg
+        }
+      }))
   }
 
   function formatTime(date){
