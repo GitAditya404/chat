@@ -6,9 +6,18 @@ const Sidebar = ({rooms}) => {
   const navigate = useNavigate()
   const {id} = useParams()
 
-   function nameClickHandler(roomId){
+  function nameClickHandler(roomId){
       navigate(`/room/${roomId}`)
-    }
+  }
+
+  function profileClick(){
+     navigate('/profile')
+  }
+
+  function plusClick(){
+    navigate('/')
+  }
+
 
     return (
         <>
@@ -16,7 +25,11 @@ const Sidebar = ({rooms}) => {
 
             <div className='flex  items-start'>
                 <h1 className=' text-white font-bold  text-3xl'>Connect</h1>
-                <button className=' ml-auto rounded bg-blue-600 text-white p-2'>Profile</button>
+                <button onClick={plusClick} >
+                    <img  className="size-7 mt-2 invert brightness-200 cursor-pointer ml-[14vw] " src="../public/add.png" alt="" />
+                </button>
+
+                <button onClick={profileClick} className=' ml-auto rounded bg-blue-600 text-white p-2'>Profile</button>
             </div>
             <div className='flex-1 mt-4 overflow-y-auto space-y-2'>
               {rooms.length === 0 ? (
