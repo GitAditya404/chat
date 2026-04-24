@@ -115,18 +115,10 @@ const wss = new WebSocketServer({port:8080})
 
   let allSocket = {}
 
-    wss.on("connection" ,async (socket ,req) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
+    wss.on("connection" , (socket ,req) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
         console.log('user Connected')
 
-        // const token = req.cookies.token //this wont work here b/c this req does not pass through express cookie parser 
-        const cookies  = req.headers.cookie  // o/p -> token=abc123; theme=dark
-        const token = cookies?.split('; ')
-                      .find(row => row.startsWith('token='))
-                      ?.split('=')[1];
-
-        const user = await verifyUser(token)
-
-        socket.on("message" , (msg) => {
+        socket.on("message" , async (msg) => {
             const parsedMsg = JSON.parse(msg)  // since msg that is coming is string u need to conver it to obj
 
 
@@ -144,11 +136,17 @@ const wss = new WebSocketServer({port:8080})
 
             if(parsedMsg.type === 'chat')
             {
+                // const token = req.cookies.token //this wont work here b/c this req does not pass through express cookie parser 
+                const cookies  = req.headers.cookie  // o/p -> token=abc123; theme=dark
+                const token = cookies?.split('; ')
+                              .find(row => row.startsWith('token='))
+                              ?.split('=')[1];
+
+                const user = await verifyUser(token)
+
                 const roomId = socket.room;
                 if(!roomId) // check if socket has a room 
                     return console.log('user not in any room' + roomId)
-                if(!allSocket[roomId])  // check if the room exist in our server
-                    return console.log('room doesnt exist')
                 
                 const clients = allSocket[roomId]
 

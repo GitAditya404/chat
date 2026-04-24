@@ -104,40 +104,58 @@ const Room = () => {
       </div>
 
       {/* Messages Section */}
-      <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#111827]">
-        <div className="max-w-4xl mx-auto space-y-3">
-          {message.map((e, i) => {
-            return (
-              <div
-                key={i}
-                className={`flex ${
-                  e.type === "sent" ? "justify-end" : "justify-start"
-                }`}
-              >
+        <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#111827]">
+          <div className="max-w-4xl mx-auto space-y-3">
+            {message.map((e, i) => {
+
+                let renderName  = false;
+                const prevSender = i > 0 ? message[i-1].senderName  : null ; //if its not first msg then find name of previous sender
+                  if(prevSender != e.senderName && e.type !="sent")
+                    renderName = true;
+                  else
+                    renderName = false
+
+              return (
                 <div
-                  className={`relative rounded-2xl px-4 py-2 max-w-xs md:max-w-md shadow-md ${
-                    e.type === "sent"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-black"
+                  key={i}
+                  className={`flex ${
+                    e.type === "sent" ? "justify-end" : "justify-start"
                   }`}
                 >
-                  <span className="pr-14 wrap-break-word">{e.content}</span>
+                  <div className="flex flex-col">
 
-                  <span
-                    className={`absolute bottom-1 right-2 text-[10px] ${
-                      e.type === "sent"
-                        ? "text-blue-100"
-                        : "text-gray-500"
-                    }`}
-                  >
-                    {formatTime(e.timestamp)}
-                  </span>
+                    { renderName === true && (
+                      <span className="text-xs text-gray-400 mb-1 ml-2">
+                        {e.senderName}
+                      </span>
+                    )
+                    }
+
+                    <div
+                      className={`relative rounded-2xl px-4 py-2 max-w-xs md:max-w-md shadow-md ${
+                        e.type === "sent"
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-black"
+                      }`}
+                    >
+                      <span className="pr-14 wrap-break-word">{e.content}</span>
+
+                      <span
+                        className={`absolute bottom-1 right-2 text-[10px] ${
+                          e.type === "sent"
+                            ? "text-blue-100"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {formatTime(e.timestamp)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
 
       {/* Input Section */}
       <div className="h-20 bg-[#1e293b] flex items-center px-6">
