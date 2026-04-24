@@ -1,16 +1,21 @@
 import React from 'react'
-import { useState, useRef ,useEffect } from 'react'
+import { useState, useRef ,useEffect,useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { RoomContext } from '../../context/RoomContext'
 
 const Room = () => {
       // const [message , setMessage] = useState([{content:'hi there', timestamp:new Date(),type : "received"},{content:'hello', timestamp:new Date(),type :"received"}])
   const [message , setMessage] = useState([])
-  // const [sentMsg , setSentmsg] = useState([])
-  
+
   const {id} = useParams();
   const wsRef = useRef()
   const inputRef = useRef(null)
+
+  const {rooms} = useContext(RoomContext)
+
+  const roomName = rooms.find((room) => room._id.toString() === id)?.name
+
 
   const fetchMsg = async () => {
     const resp = await axios.get('http://localhost:3000/msg',
@@ -89,54 +94,72 @@ const Room = () => {
       });
     }
 
-  return <>
-    <div className=' border-2 h-screen bg-black  '>
-        <div className='border h-[90vh]'>
+  return (
+  <>
+    <div className="h-screen bg-[#0f172a] flex flex-col">
 
-          <div className='w-full  border bg-gray-300'>
-            <div className='border-2  border-amber-500 bg-blue-500 m-7'>
-              {message.map((e,i) => {
-                return <div className= {`m-2 flex border-red-500 ${e.type === "sent" ? "justify-end" : "justify-start"}`}>
-                          <div className='relative border-2 bg-amber-500 rounded  p-2 text-black '>
-                              <span className='pr-12'>{e.content}</span>
+      {/* Header */}
+      <div className="h-16 bg-[#1e293b] flex items-center px-6 shadow-md">
+        <h1 className="text-white text-2xl font-semibold">{roomName}</h1>
+      </div>
 
-                              <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
-                                {formatTime(e.timestamp)}
-                              </span>
-                          </div>
-                    
-                    </div>
-              })}
-            </div>
+      {/* Messages Section */}
+      <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#111827]">
+        <div className="max-w-4xl mx-auto space-y-3">
+          {message.map((e, i) => {
+            return (
+              <div
+                key={i}
+                className={`flex ${
+                  e.type === "sent" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <div
+                  className={`relative rounded-2xl px-4 py-2 max-w-xs md:max-w-md shadow-md ${
+                    e.type === "sent"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200 text-black"
+                  }`}
+                >
+                  <span className="pr-14 wrap-break-word">{e.content}</span>
 
-          </div>
-
-          {/* <div className='RIGHT-SENT w-1/2 bg-rose-500'>
-              <div className='border-2  border-amber-500 m-7'>
-                {sentMsg.map((e,i) => {
-                  return <div className='m-2 border flex justify-end'>
-                            <div className='relative border-2 rounded bg-white p-2 text-black max-w-fit'>
-                    <span className='pr-12'>{e.content}</span>
-
-                    <span className='absolute bottom-1 right-0 text-[12px] text-gray-500'>
-                      {formatTime(e.timestamp)}
-                    </span>
-                  </div>
-                    </div>
-                })}
+                  <span
+                    className={`absolute bottom-1 right-2 text-[10px] ${
+                      e.type === "sent"
+                        ? "text-blue-100"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {formatTime(e.timestamp)}
+                  </span>
+                </div>
               </div>
+            );
+          })}
+        </div>
+      </div>
 
-          </div> */}
+      {/* Input Section */}
+      <div className="h-20 bg-[#1e293b] flex items-center px-6">
+        <div className="max-w-4xl mx-auto w-full flex gap-4">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Type a message..."
+            className="flex-1 h-12 rounded-full px-5 outline-none text-black"
+          />
+          <button
+            onClick={clickHandler}
+            className="bg-blue-500 hover:bg-blue-600 transition px-6 rounded-full text-white font-medium"
+          >
+            Send
+          </button>
         </div>
-        <div className='ml-96 mr-96 h-16 text-white'>
-          <div className='flex mt-2  '>
-            <input className='bg-white caret-black p-1 w-[40vw] text-gray-700 h-12' ref={inputRef} type="text" placeholder='Type your msg...' />
-            <button onClick={clickHandler} className='border ml-5 rounded-xl bg-blue-500 w-24'>Send</button>
-          </div>
-        </div>
+      </div>
 
     </div>
   </>
+)
 }
 
 export default Room
