@@ -11,6 +11,7 @@ const Room = () => {
   const {id} = useParams();
   const wsRef = useRef()
   const inputRef = useRef(null)
+  const lastMsgRef = useRef(null)
 
   const {rooms} = useContext(RoomContext)
 
@@ -102,6 +103,17 @@ const Room = () => {
       });
   }
 
+  // const scrollHandler = (id) => {
+  //   document.getElementById(id).scrollIntoView({
+  //     behavior : 'smooth'
+  //   })
+  // }
+  useEffect(() => {
+    lastMsgRef.current?.scrollIntoView({
+      behavior : 'smooth'
+    })
+  }, [message])
+  
   return (
   <>
     <div className="h-screen bg-[#0f172a] flex flex-col">
@@ -114,7 +126,9 @@ const Room = () => {
       {/* Messages Section */}
         <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#111827]">
           <div className="max-w-4xl mx-auto space-y-3">
+
             {message.map((e, i) => {
+
               let renderName = false;
               const prevSender = i > 0 ? message[i - 1].senderName : null;
 
@@ -139,6 +153,7 @@ const Room = () => {
                   )}
 
                   <div
+                    ref={i === message.length-1 ? lastMsgRef : null}
                     className={`flex ${
                       e.type === "sent" ? "justify-end" : "justify-start"
                     }`}
