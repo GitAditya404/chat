@@ -1,26 +1,34 @@
 import { useRef } from "react"
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
+import { useState } from "react"
 
 const Signup = () => {
 
     const nameRef = useRef(null)
     const passwordRef = useRef(null)
     const emailRef = useRef(null)
+    const [errorMsg , setErrorMsg] = useState("")
     
     const navigate = useNavigate()
 
     async  function clickHandler() {
 
+        try{
         const resp = await axios.post("http://localhost:3000/signup",{
             fullname : nameRef.current.value ,
             email :emailRef.current.value , 
             password : passwordRef.current.value
         }, 
         {withCredentials:true}  // it allows cross-origin http request to include sensitive info like cookie
-        );
+        )
 
         navigate('/');
+        }
+
+        catch(err){
+            setErrorMsg(err.response.data.msg)
+        }
     }
 
 
@@ -30,10 +38,14 @@ const Signup = () => {
             <div className="w-1/2 h-full  rounded-xl overflow-hidden">
                 <img className="h-full w-full object-cover  " src="/mountain.jpg" alt="" />
             </div>
-
-            <div className="w-2/5  ml-[7vw] mt-[15vh]">
+            <div className="w-2/5   ml-[7vw] mt-[15vh]">
 
                 <h3 className="text-4xl text-semibold ">Create an account</h3>
+                {errorMsg && (
+                    <div className="w-3/5 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-md mt-4">
+                        {errorMsg}
+                    </div>
+                    )}
                 <div className="flex mt-4">
                     <p className="tracking-tight ">Already have an account?</p>
                     <a className="text-blue-500 underline ml-2" href="">Log in </a>
