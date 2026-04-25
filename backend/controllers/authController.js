@@ -58,18 +58,46 @@ export const registerUser = async  (req,res) => {
 
 
 export const loginUser = async (req,res) => {
-    const {email,password} = req.body;
-    const user = await userModel.findOne({email})
-    if(!user)
-        return res.status(404).send("email Incorrect")
 
-    const hash = user.password
-    bcrypt.compare(password, hash, function(err, result) {
-        if(!result)
-            return res.status(404).send("Password Incorrect")
-        
-        const token = generateToken(email)
-        res.cookie("token" , token)
-        res.send('cookie stored')
-    });
+    const bodySchema = zod.object({
+            email : zod.string().email(),
+            password : zod.string()
+    })
+
+
+    const result = bodySchema.safeParse(req.body)
+    if(!result.success) {
+        return res.status(400).json({
+                msg: `${result.error.issues[0].path} -> ${result.error.issues[0].message}`
+            })
+    }
+
+    const {email,password} = result.data;
+
+    try{
+        const user = await userModel.findOne({email})
+        if(!user)
+            return res.status(404).json({
+                msg: "Email Incorrect"
+            })
+
+        const hash = user.password
+        bcrypt.compare(password, hash, function(err, result) {
+            if(!result)
+                return res.status(404).json({
+                    msg: "Password Incorrect"
+                })
+            
+            const token = generateToken(email)
+            res.cookie("token" , token)
+            res.send('cookie stored')
+        });
+    }
+
+    catch(err){
+        return res.status(400).json({
+            msg : "Internal Server error"
+        })
+    }
+
 }

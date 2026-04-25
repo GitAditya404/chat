@@ -8,10 +8,19 @@ import cors from 'cors'
 import roomModel from './models/roomModel.js'
 import messageModel from './models/messageModel.js'
 import verifyUser from "./utils/verifyUser.js"
+import flash from 'connect-flash'
+import expressSession from 'express-session'
 
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
+app.use(expressSession({
+    secret :"secretword",
+    resave: false,
+    saveUninitialized : false
+}))
+
+app.use(flash())
 
 app.use(cors({
   origin: "http://localhost:5173",

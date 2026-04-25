@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { useState } from "react"
 
 const Signup = () => {
@@ -48,7 +48,7 @@ const Signup = () => {
                     )}
                 <div className="flex mt-4">
                     <p className="tracking-tight ">Already have an account?</p>
-                    <a className="text-blue-500 underline ml-2" href="">Log in </a>
+                    <Link className="text-blue-500 underline ml-2" to='/login' >Log in</Link>
                 </div>
 
                 <form onSubmit={(e) => {
