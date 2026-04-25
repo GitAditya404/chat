@@ -10,6 +10,7 @@ import messageModel from './models/messageModel.js'
 import verifyUser from "./utils/verifyUser.js"
 import flash from 'connect-flash'
 import expressSession from 'express-session'
+import zod from 'zod'
 
 const app = express()
 app.use(express.json())
@@ -62,17 +63,38 @@ app.post('/room/join', isLoggedIn,async (req,res) => {
 })
 
 app.post('/room/create' , isLoggedIn ,async (req,res) =>{
+
+    const bodySchema = zod.object({
+        name: zod.string().regex(/^[a-zA-Z0-9]+$/)
+    })
+
+    const result = bodySchema.safeParse(req.body)
+    if(!result.success)
+        return res.status(400).json ({
+          msg : "Name must contain only letters and numbers "
+    })
+
+    const {name} = result.data;
+
     try{
-      const {name} = req.body;
+      const check = await roomModel.findOne({name : name})
+      if(check)
+        return res.status(403).json({
+          msg : "Name not available"
+        })
       const room = await roomModel.create({
         name:name,
         members : [req.user._id]
       })
-      return res.status(200).send('created '+name +' successfully')
+      return res.status(200).json({
+        msg : `created ${name} successfully`
+      })
     }
 
     catch(e){
-      return res.status(500).send('unable to create join room')
+      return res.status(500).json({
+        msg: "Unable to create Room"
+      })
     }
 })
 
