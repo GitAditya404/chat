@@ -11,14 +11,22 @@ const Home = () => {
   const {fetchData} = useContext(RoomContext)
 
   async function joinClick(){
-    const resp = await axios.post('http://localhost:3000/room/join',
-      {
-        name: joinRef.current.value
-      },
-      {withCredentials: true}
-    )
-    console.log(resp.data)
-    await fetchData()
+    
+    try{
+      const response = await axios.post('http://localhost:3000/room/join',
+        {
+          name: joinRef.current.value
+        },
+        {withCredentials: true}
+      )
+      await fetchData()
+      if(response.data.msg)
+        setResponseMsg(response.data.msg)
+    }
+    catch(err){
+      setResponseMsg(err.response.data.msg)
+    }
+
   }
 
   async function createClick(){
@@ -42,51 +50,86 @@ const Home = () => {
   }
 
   return (
-    <>
-    <div className='OUTER flex border-4 w-full text-white h-screen bg-black'>
+  <>
+    <div className="OUTER flex w-full min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
 
-        <div className='RIGHT border-l border-[#2c2d2d]  bg-[#161717]    w-2/3'>
-              <div className='ml-52 mt-20'>
-                <div className='bg-[#2E2F2F] rounded-xl w-[40vw] h-60 border-2 text-white '>
+      <div className="RIGHT w-2/3 flex justify-center items-start overflow-y-auto">
+        <div className="w-full max-w-4xl mt-10 space-y-12">
 
-                  <div className='text-center '>
-                    <p className='text-4xl font-bold underline'>Join a Room</p>
-                  </div>
+          {/* Response Message */}
+          {responseMsg && (
+            <div className="mx-auto w-[80%] bg-[#D88AD8] text-black rounded-md border-4 border-black shadow-[6px_6px_0px_#111] px-6 py-4">
+              <p className="text-center text-xl font-bold">{responseMsg}</p>
+            </div>
+          )}
 
-                  <div className='ml-5 '>
-                    <p className='text-xl text-red-500  mt-9'>Room Name :</p>
-                    <input ref={joinRef} className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
-                    <button onClick={joinClick} className=' mt-4 text-xl rounded bg-blue-600 text-white py-3 px-8 cursor-pointer' >Join</button>
-                  </div>
+          {/* Join Room Card */}
+          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[10px_10px_0px_#111] p-10">
 
-                </div>
+            <span className="absolute top-4 left-6 text-3xl">✦</span>
+            <span className="absolute top-4 right-6 text-3xl">✦</span>
+            <span className="absolute bottom-4 left-6 text-3xl">✦</span>
+            <span className="absolute bottom-4 right-6 text-3xl">✦</span>
 
-                <div className='bg-[#2E2F2F] mt-14 rounded-xl w-[40vw] h-60 border-2 text-white '>
+            <h1 className="text-5xl font-extrabold text-center tracking-wide">
+              JOIN ROOM!
+            </h1>
 
-                  <div className='text-center '>
-                    <p className='text-4xl font-bold underline'>Create a Room</p>
-                  </div>
+            <p className="text-center text-2xl font-semibold mt-4">
+              Enter your room name 😄
+            </p>
 
-                  {responseMsg && (
-                    <div className="w-3/5 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-md mt-4">
-                        {responseMsg}
-                    </div>
-                  )}
+            <input
+              ref={joinRef}
+              type="text"
+              placeholder="Room Name"
+              className="mt-10 w-full px-5 py-4 rounded-md border-4 border-black bg-white text-black outline-none text-lg font-medium"
+            />
 
-                  <div className='ml-5 '>
-                    <p className='text-xl text-red-500  mt-9'>Room Name :</p>
-                    <input ref={createRef} className='block mt-1 bg-white text-black rounded p-3' type="text" placeholder='name' />
-                    <button onClick={createClick} className=' mt-4 text-xl rounded bg-blue-600 text-white py-3 px-8 cursor-pointer' >Create</button>
-                  </div>
+            <button
+              onClick={joinClick}
+              className="mt-8 w-full bg-[#D88AD8] border-4 border-black text-black text-2xl font-bold py-4 shadow-[5px_5px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+            >
+              Let’s Go!
+            </button>
+          </div>
 
-                </div>
-              </div>
+          {/* Create Room Card */}
+          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[10px_10px_0px_#111] p-10">
 
+            <span className="absolute top-4 left-6 text-3xl">✦</span>
+            <span className="absolute top-4 right-6 text-3xl">✦</span>
+            <span className="absolute bottom-4 left-6 text-3xl">✦</span>
+            <span className="absolute bottom-4 right-6 text-3xl">✦</span>
+
+            <h1 className="text-5xl font-extrabold text-center tracking-wide">
+              CREATE ROOM!
+            </h1>
+
+            <p className="text-center text-2xl font-semibold mt-4">
+              Make your own space 🚀
+            </p>
+
+            <input
+              ref={createRef}
+              type="text"
+              placeholder="Room Name"
+              className="mt-10 w-full px-5 py-4 rounded-md border-4 border-black bg-white text-black outline-none text-lg font-medium"
+            />
+
+            <button
+              onClick={createClick}
+              className="mt-8 w-full bg-[#D88AD8] border-4 border-black text-black text-2xl font-bold py-4 shadow-[5px_5px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+            >
+              Create Now!
+            </button>
+          </div>
 
         </div>
+      </div>
     </div>
-    </>
-  )
+  </>
+)
 }
 
 export default Home

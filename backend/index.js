@@ -44,20 +44,38 @@ app.get('/me' , isLoggedIn , (req,res) => {
 
 app.post('/room/join', isLoggedIn,async (req,res) => {
 
+  const bodySchema = zod.object({
+        name: zod.string().regex(/^[a-zA-Z0-9]+$/)
+  })
+
+  const result = bodySchema.safeParse(req.body)
+
+  if(!result.success)
+        return res.status(400).json ({
+          msg : "Name must contain only letters and numbers "
+    })
+
+  const {name} = result.data;
+
   try{
-    const {name} = req.body;
     const room  = await roomModel.findOneAndUpdate({name},
        {$addToSet :{members: req.user._id}},
       {new:true}
     )
     if(!room)
-      res.status(404).send('Room does not exist')
+      res.status(404).json({
+        msg : "Room does not exist"
+      })
 
-    return res.status(200).send('joined ' + req.body.name+' successfully')
+    return res.status(200).json({
+      msg : `Joined ${name} successfully`
+    })
   }
   
   catch(e){
-    return res.status(500).send('Server error')
+    return res.status(500).json({
+      msg : "Internal Server Error"
+    })
   }
 
 })
