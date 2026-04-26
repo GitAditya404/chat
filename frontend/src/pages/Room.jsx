@@ -12,6 +12,7 @@ const Room = () => {
   const wsRef = useRef()
   const inputRef = useRef(null)
   const lastMsgRef = useRef(null)
+  const [isRoomCreator , setIsRoomCreator ] = useState(false)
 
   const {rooms} = useContext(RoomContext)
 
@@ -32,6 +33,18 @@ const Room = () => {
     data  = data.sort((a,b) => a.timestamp - b.timestamp)
     setMessage(data)
 
+  }
+
+
+  async function checkCreator (){
+    const response = await axios.get('http://localhost:3000/creator',
+      {
+        params : {roomId : id},
+        withCredentials : true
+      }
+    )
+
+      setIsRoomCreator(response.data)
   }
 
   useEffect(() => {
@@ -56,7 +69,8 @@ const Room = () => {
     }
 
     fetchMsg()
-
+    checkCreator()
+    
     return () => {
       setMessage([])
       ws.close()
@@ -119,8 +133,15 @@ const Room = () => {
     <div className="h-screen bg-[#0f172a] flex flex-col">
 
       {/* Header */}
-      <div className="h-16 bg-[#1e293b] flex items-center px-6 shadow-md">
+      <div className="h-16 border bg-[#1e293b] flex items-center px-6 shadow-md">
         <h1 className="text-white text-2xl font-semibold">{roomName}</h1>
+        {
+          isRoomCreator && <button onClick={deleteHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Delete Room</button>
+        }
+        {
+          !isRoomCreator && <button onClick={leaveHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Leave Room</button>
+        }
+        
       </div>
 
       {/* Messages Section */}
@@ -153,7 +174,8 @@ const Room = () => {
                   )}
 
                   <div
-                    ref={i === message.length-1 ? lastMsgRef : null}
+                    ref={i === message.length-1 ? lastMsgRef : null} //if last msg attach  // ref
+
                     className={`flex ${
                       e.type === "sent" ? "justify-end" : "justify-start"
                     }`}

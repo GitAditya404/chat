@@ -41,6 +41,15 @@ app.get('/me' , isLoggedIn , (req,res) => {
   res.status(200).send('user verified')
 })
 
+app.get('/creator', isLoggedIn ,async (req,res) => {
+  const {roomId} = req.query;
+
+  const room = await roomModel.findOne({_id : roomId})
+  if(room.members[0].toString() === req.user._id.toString())
+    return res.status(200).send(true)
+  return res.status(200).send(false)
+})
+
 
 app.post('/room/join', isLoggedIn,async (req,res) => {
 

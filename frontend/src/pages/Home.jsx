@@ -76,7 +76,7 @@ const Home = () => {
             </h1>
 
             <p className="text-center text-2xl font-semibold mt-4">
-              Enter your room name 😄
+              Enter  room name 😄
             </p>
 
             <input
