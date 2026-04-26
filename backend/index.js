@@ -7,6 +7,7 @@ import isLoggedIn from "./middlewares/isLoggedIn.js"
 import cors from 'cors'
 import roomModel from './models/roomModel.js'
 import messageModel from './models/messageModel.js'
+import userModel from "./models/userModel.js"
 import verifyUser from "./utils/verifyUser.js"
 import flash from 'connect-flash'
 import expressSession from 'express-session'
@@ -144,7 +145,7 @@ app.post('/room/delete' , isLoggedIn , async (req,res) => {
 
     await messageModel.deleteMany({roomId : roomId})  //deleting all msg of this room
 
-    delete allSocket[room]  // remove room from websocket
+    delete allSocket[room]  // delete room from websocket
 
     return res.status(200).json({
       msg : "Room deleted successfully"
@@ -160,7 +161,7 @@ app.post('/room/delete' , isLoggedIn , async (req,res) => {
 })
 
 app.post('/room/leave' , isLoggedIn,async (req,res) => {
-    const {roomid} = req.body;
+    const {roomId} = req.body;
 
     try{
 
@@ -170,6 +171,8 @@ app.post('/room/leave' , isLoggedIn,async (req,res) => {
             msg : "Room not found"
         })
 
+      //when i leave then through frontend useEffect cleanup in backend allSocket filters the socket , so no need to do it here
+      
       await roomModel.updateOne({_id : roomId}, {$pull : {members : req.user._id}})
       return res.status(200).json({
         msg : "Left room successfully"
@@ -223,6 +226,24 @@ app.get('/msg', isLoggedIn,async (req,res) => {
     }
   })
   return res.status(200).send(data)
+})
+
+app.get('/profile' , isLoggedIn , async (req,res) => {
+    try{
+        const data = await userModel.findOne({_id :req.user._id}).select('-password')
+        if(!data)
+          return res.status(404).json({
+              msg : "User not found"
+        })
+        return res.status(200).send(data)
+    }
+
+    catch(err){
+      return res.status(500).json({
+        msg : "Internal server error"
+      })
+    }
+
 })
 
 app.listen(3000)
