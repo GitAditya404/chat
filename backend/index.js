@@ -59,8 +59,8 @@ app.post('/room/join', isLoggedIn,async (req,res) => {
   const {name} = result.data;
 
   try{
-    const room  = await roomModel.findOneAndUpdate({name},
-       {$addToSet :{members: req.user._id}},
+    const room  = await roomModel.findOneAndUpdate({name :name.toLowerCase()},
+       {$addToSet :{members: req.user._id}}, //user can join only once
       {new:true}
     )
     if(!room)
@@ -102,7 +102,7 @@ app.post('/room/create' , isLoggedIn ,async (req,res) =>{
           msg : "Name not available"
         })
       const room = await roomModel.create({
-        name:name,
+        name:name.toLowerCase(),
         members : [req.user._id]
       })
       return res.status(200).json({
