@@ -18,7 +18,7 @@ const Layout = () => {
         <Sidebar rooms={rooms} />
 
         {/* RIGHT SIDE CHANGES */}
-        <div className='w-2/3 border-l border-[#2c2d2d]'>
+        <div className='flex-1 border-l border-[#2c2d2d]'>
             <Outlet />
         </div>
 

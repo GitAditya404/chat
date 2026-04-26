@@ -51,7 +51,7 @@ const Home = () => {
 
   return (
   <>
-    <div className="OUTER justify-center flex w-full min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
+    <div className="OUTER border-4 justify-center flex  min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
 
       <div className="RIGHT  w-2/3 flex justify-center items-start overflow-y-auto">
         <div className="w-full border-blue-500 max-w-4xl mt-10 space-y-12">
