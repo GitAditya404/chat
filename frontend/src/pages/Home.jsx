@@ -51,10 +51,10 @@ const Home = () => {
 
   return (
   <>
-    <div className="OUTER flex w-full min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
+    <div className="OUTER justify-center flex w-full min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
 
-      <div className="RIGHT w-2/3 flex justify-center items-start overflow-y-auto">
-        <div className="w-full max-w-4xl mt-10 space-y-12">
+      <div className="RIGHT  w-2/3 flex justify-center items-start overflow-y-auto">
+        <div className="w-full border-blue-500 max-w-4xl mt-10 space-y-12">
 
           {/* Response Message */}
           {responseMsg && (
@@ -64,49 +64,49 @@ const Home = () => {
           )}
 
           {/* Join Room Card */}
-          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[10px_10px_0px_#111] p-10">
+          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
 
-            <span className="absolute top-4 left-6 text-3xl">✦</span>
-            <span className="absolute top-4 right-6 text-3xl">✦</span>
-            <span className="absolute bottom-4 left-6 text-3xl">✦</span>
-            <span className="absolute bottom-4 right-6 text-3xl">✦</span>
+            <span className="absolute top-3 left-4 text-2xl">✦</span>
+            <span className="absolute top-3 right-4 text-2xl">✦</span>
+            <span className="absolute bottom-3 left-4 text-2xl">✦</span>
+            <span className="absolute bottom-3 right-4 text-2xl">✦</span>
 
-            <h1 className="text-5xl font-extrabold text-center tracking-wide">
+            <h1 className="text-3xl font-extrabold text-center tracking-wide">
               JOIN ROOM!
             </h1>
 
-            <p className="text-center text-2xl font-semibold mt-4">
-              Enter  room name 😄
+            <p className="text-center text-lg font-semibold mt-2">
+              Enter room name 😄
             </p>
 
             <input
               ref={joinRef}
               type="text"
               placeholder="Room Name"
-              className="mt-10 w-full px-5 py-4 rounded-md border-4 border-black bg-white text-black outline-none text-lg font-medium"
+              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
             />
 
             <button
               onClick={joinClick}
-              className="mt-8 w-full bg-[#D88AD8] border-4 border-black text-black text-2xl font-bold py-4 shadow-[5px_5px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
             >
               Let’s Go!
             </button>
           </div>
 
           {/* Create Room Card */}
-          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[10px_10px_0px_#111] p-10">
+          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
 
-            <span className="absolute top-4 left-6 text-3xl">✦</span>
-            <span className="absolute top-4 right-6 text-3xl">✦</span>
-            <span className="absolute bottom-4 left-6 text-3xl">✦</span>
-            <span className="absolute bottom-4 right-6 text-3xl">✦</span>
+            <span className="absolute top-3 left-4 text-2xl">✦</span>
+            <span className="absolute top-3 right-4 text-2xl">✦</span>
+            <span className="absolute bottom-3 left-4 text-2xl">✦</span>
+            <span className="absolute bottom-3 right-4 text-2xl">✦</span>
 
-            <h1 className="text-5xl font-extrabold text-center tracking-wide">
+            <h1 className="text-3xl font-extrabold text-center tracking-wide">
               CREATE ROOM!
             </h1>
 
-            <p className="text-center text-2xl font-semibold mt-4">
+            <p className="text-center text-lg font-semibold mt-2">
               Make your own space 🚀
             </p>
 
@@ -114,12 +114,12 @@ const Home = () => {
               ref={createRef}
               type="text"
               placeholder="Room Name"
-              className="mt-10 w-full px-5 py-4 rounded-md border-4 border-black bg-white text-black outline-none text-lg font-medium"
+              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
             />
 
             <button
               onClick={createClick}
-              className="mt-8 w-full bg-[#D88AD8] border-4 border-black text-black text-2xl font-bold py-4 shadow-[5px_5px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
             >
               Create Now!
             </button>
