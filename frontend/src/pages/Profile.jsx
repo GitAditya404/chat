@@ -5,6 +5,33 @@ import axios from 'axios'
 const Profile = () => {
 
   const [data , setData] = useState(null)
+  const [responseMsg , setResponseMsg] = useState("")
+
+  async function saveHandler(){
+
+    try{
+      const response = await axios.post('http://localhost:3000/profile/save',
+      {
+        data : data
+      },
+      {withCredentials : true}
+    )
+    setResponseMsg(response.data.msg)
+
+    setTimeout(() => {
+      setResponseMsg("")
+    }, 5000);
+    }
+
+    catch(err){
+      setResponseMsg(err.response?.data.msg)
+
+      setTimeout(() => {
+        setResponseMsg("")
+      }, 5000);
+    }
+
+  }
 
   useEffect(() => {
     async function fetchData(){
@@ -15,10 +42,16 @@ const Profile = () => {
           }
         )
         setData(response.data)
+        setTimeout(() => {
+          setResponseMsg("")
+        }, 5000);
       }
 
       catch(err){
-        console.log(err)
+        setResponseMsg(err.response?.data.msg)
+        setTimeout(() => {
+          setResponseMsg("")
+        }, 5000);
       }
 
     }
@@ -30,13 +63,20 @@ return (
 
       {/* Top Abstract Banner */}
       <div
-        className="h-60  bg-cover bg-center "
+        className="h-60 bg-cover bg-center "
         style={{ backgroundImage: "url('/abstract_background.jpg')" }}
       >
+        {responseMsg && (
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[80%] max-w-sm">
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl shadow-md text-center font-medium">
+              {responseMsg}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Main Card */}
-      <div className="max-w-6xl mx-auto -mt-28 flex gap-8 px-6">
+      <div className="max-w-6xl mx-auto relative -mt-24  flex gap-8 px-6">
 
         {/* Left Profile Card */}
       <div className="w-1/3 bg-white rounded-3xl shadow-xl overflow-hidden h-fit">
@@ -44,17 +84,17 @@ return (
           {/* Top section */}
           <div className="flex flex-col items-center px-8 py-10 bg-linear-to-b from-blue-50 to-white border-b">
             <img
-              src="/defaultImg.jpg"
+              src="/default_img.jpg"
               alt=""
               className="w-36 h-36 rounded-full border-4 border-white shadow-lg object-cover"
             />
 
             <h2 className="mt-5 text-3xl font-bold text-gray-800 text-center">
-              {data?.fullname}
+              {data?.fullname || ""}
             </h2>
 
             <p className="text-gray-500 text-sm mt-1 break-all text-center">
-              {data?.email}
+              {data?.email || ""}
             </p>
           </div>
 
@@ -94,7 +134,7 @@ return (
               <label className="text-gray-500 text-sm">Full Name</label>
               <input
                 type="text"
-                value={data?.fullname}
+                value={data?.fullname || ""}
                 onChange={(e) => setData({...data ,fullname : e.target.value})}
                 className="w-full mt-2 border rounded-lg px-4 py-3 outline-none bg-gray-50"
               />
@@ -104,7 +144,7 @@ return (
               <label className="text-gray-500 text-sm">Email</label>
               <input
                 type="text"
-                value={data?.email}
+                value={data?.email || ""}
                 readOnly
                 className="w-full mt-2 border rounded-lg px-4 py-3 outline-none bg-[#d4e9e3]"
               />
@@ -114,7 +154,7 @@ return (
               <label className="text-gray-500 text-sm">Phone Number</label>
               <input
                 type="text"
-                value= {data?.phoneNo}
+                value= {data?.phoneNo  || ""}
                 onChange={(e) => setData({...data ,phoneNo : e.target.value})}
 
                 className="w-full mt-2 border rounded-lg px-4 py-3 outline-none bg-gray-50"
@@ -125,7 +165,7 @@ return (
               <label className="text-gray-500 text-sm">About</label>
               <input  
                 type="text"
-                value={data?.about}
+                value={data?.about || ""}
                 onChange={(e) => setData({...data ,about : e.target.value})}
 
                 className="w-full mt-2 border rounded-lg px-4 py-3 outline-none bg-gray-50"
@@ -134,7 +174,7 @@ return (
 
           </div>
 
-          <button className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md">
+          <button onClick={saveHandler} className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md">
             Save
           </button>
         </div>

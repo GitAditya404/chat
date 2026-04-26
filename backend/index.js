@@ -246,6 +246,25 @@ app.get('/profile' , isLoggedIn , async (req,res) => {
 
 })
 
+app.post('/profile/save' , isLoggedIn , async (req,res) => {
+  const {data} = req.body;
+
+  try{
+    await userModel.updateOne({_id : req.user._id},
+      {
+        fullname : data.fullname,
+        about : data.about,
+        phoneNo : data.phoneNo
+      }
+    )
+    return res.status(200).json({msg : "Saved !"})
+  }
+  catch(err){
+    return res.status(500).json({msg : "Internal Server Error"})
+  }
+
+})
+
 app.listen(3000)
 
                                   //WEBSOCKET SERVER
