@@ -19,12 +19,23 @@ const Home = () => {
         },
         {withCredentials: true}
       )
-      await fetchData()
       if(response.data.msg)
-        setResponseMsg(response.data.msg)
+        {
+          setResponseMsg(response.data.msg)
+          await fetchData()
+
+          setTimeout(() => {
+            console.log("ran")
+            setResponseMsg("")
+          }, 4000);
+      }
+
     }
     catch(err){
       setResponseMsg(err.response.data.msg)
+      setTimeout(() => {
+        setResponseMsg("")
+      }, 4000);
     }
 
   }
@@ -39,37 +50,48 @@ const Home = () => {
       )
 
       if(resp.data.msg)
+      {
         setResponseMsg(resp.data.msg)
-      await fetchData()
+        await fetchData()
+
+        setTimeout(() => {
+          console.log("ran")
+          setResponseMsg("")
+        }, 4000);
+      }
+
     }
 
     catch(err){
       setResponseMsg(err.response.data.msg)
+
+      setTimeout(() => {
+          console.log("ran")
+          setResponseMsg("")
+      }, 4000);
     }
 
   }
 
   return (
   <>
-    <div className="OUTER border-4 justify-center flex  min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
+    <div className="OUTER justify-center flex  min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
 
       <div className="RIGHT  w-2/3 flex justify-center items-start overflow-y-auto">
-        <div className="w-full border-blue-500 max-w-4xl mt-10 space-y-12">
+        <div className="relative w-full max-w-4xl mt-10 space-y-12">
 
           {/* Response Message */}
           {responseMsg && (
-            <div className="mx-auto w-[80%] bg-[#D88AD8] text-black rounded-md border-4 border-black shadow-[6px_6px_0px_#111] px-6 py-4">
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[80%] bg-[#D88AD8] text-black rounded-md border-4 border-black shadow-[6px_6px_0px_#111] px-6 py-4">
               <p className="text-center text-xl font-bold">{responseMsg}</p>
             </div>
           )}
 
           {/* Join Room Card */}
-          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
+          <div className=" relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
 
             <span className="absolute top-3 left-4 text-2xl">✦</span>
             <span className="absolute top-3 right-4 text-2xl">✦</span>
-            <span className="absolute bottom-3 left-4 text-2xl">✦</span>
-            <span className="absolute bottom-3 right-4 text-2xl">✦</span>
 
             <h1 className="text-3xl font-extrabold text-center tracking-wide">
               JOIN ROOM!
@@ -99,8 +121,6 @@ const Home = () => {
 
             <span className="absolute top-3 left-4 text-2xl">✦</span>
             <span className="absolute top-3 right-4 text-2xl">✦</span>
-            <span className="absolute bottom-3 left-4 text-2xl">✦</span>
-            <span className="absolute bottom-3 right-4 text-2xl">✦</span>
 
             <h1 className="text-3xl font-extrabold text-center tracking-wide">
               CREATE ROOM!

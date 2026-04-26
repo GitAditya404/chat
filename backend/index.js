@@ -2,7 +2,7 @@ import { WebSocketServer } from "ws"
 import db  from'./config/db.js'
 import express from 'express'
 import cookieParser from "cookie-parser"
-import {loginUser, registerUser} from './controllers/authController.js'
+import {loginUser, registerUser ,logout} from './controllers/authController.js'
 import isLoggedIn from "./middlewares/isLoggedIn.js"
 import cors from 'cors'
 import roomModel from './models/roomModel.js'
@@ -22,6 +22,7 @@ app.use(cors({
 
 app.post('/signup',registerUser)
 app.post('/login',loginUser)
+app.post('/logout',logout)
 
 app.get('/',isLoggedIn ,async (req,res) => {
     const rooms = await roomModel.find({members:req.user._id})

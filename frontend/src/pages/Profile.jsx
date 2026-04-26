@@ -1,11 +1,12 @@
 import React from 'react'
 import { useState , useEffect } from 'react'
 import axios from 'axios'
-
+import { useNavigate } from 'react-router-dom'
 const Profile = () => {
 
   const [data , setData] = useState(null)
   const [responseMsg , setResponseMsg] = useState("")
+  const navigate = useNavigate()
 
   async function saveHandler(){
 
@@ -20,7 +21,7 @@ const Profile = () => {
 
     setTimeout(() => {
       setResponseMsg("")
-    }, 5000);
+    }, 4000);
     }
 
     catch(err){
@@ -28,9 +29,29 @@ const Profile = () => {
 
       setTimeout(() => {
         setResponseMsg("")
-      }, 5000);
+      }, 4000);
     }
 
+  }
+
+  async function logOut(){
+    try{
+      await axios.post('http://localhost:3000/logout',
+        {},
+        {
+          withCredentials : true
+        }
+      )
+      navigate('/login')
+    }
+
+    catch(err){
+      setResponseMsg(err.response?.data.msg)
+
+      setTimeout(() => {
+        setResponseMsg("")
+      }, 4000);
+    }
   }
 
   useEffect(() => {
@@ -44,14 +65,14 @@ const Profile = () => {
         setData(response.data)
         setTimeout(() => {
           setResponseMsg("")
-        }, 5000);
+        }, 4000);
       }
 
       catch(err){
         setResponseMsg(err.response?.data.msg)
         setTimeout(() => {
           setResponseMsg("")
-        }, 5000);
+        }, 4000);
       }
 
     }
@@ -174,9 +195,13 @@ return (
 
           </div>
 
+          <div className='flex border'>
           <button onClick={saveHandler} className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md">
             Save
           </button>
+          <button onClick={logOut} className='ml-auto mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md'>Log Out</button>
+          </div>
+
         </div>
 
       </div>
