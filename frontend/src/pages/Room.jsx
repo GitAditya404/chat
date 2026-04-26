@@ -67,6 +67,7 @@ const Room = () => {
   }
 
   async function leaveHandler(){
+
     try{
       await axios.post('http://localhost:3000/room/leave',
         {
@@ -109,6 +110,7 @@ const Room = () => {
     
     return () => {
       setMessage([])
+      console.log("cleanup ran")
       ws.close()
     }
 
@@ -169,7 +171,7 @@ const Room = () => {
     <div className="h-screen bg-[#0f172a] flex flex-col">
 
       {/* Header */}
-      <div className="h-16 border bg-[#1e293b] flex items-center px-6 shadow-md">
+      <div className="h-16  bg-[#1e293b] flex items-center px-6 shadow-md">
         <h1 className="text-white text-2xl font-semibold">{roomName}</h1>
         {
           isRoomCreator && <button onClick={deleteHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Delete Room</button>

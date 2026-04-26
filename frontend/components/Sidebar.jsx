@@ -29,7 +29,7 @@ const Sidebar = ({rooms}) => {
                     <img  className="size-7 mt-2 invert brightness-200 cursor-pointer ml-[14vw] " src="../public/add.png" alt="" />
                 </button>
 
-                <button onClick={profileClick} className=' ml-auto rounded bg-blue-600 text-white p-2'>Profile</button>
+                <button onClick={profileClick} className=' cursor-pointer ml-auto rounded bg-blue-600 text-white p-2'>Profile</button>
             </div>
             <div className='flex-1 mt-4 overflow-y-auto space-y-2'>
               {rooms.length === 0 ? (
