@@ -49,25 +49,38 @@ const Room = () => {
   }
 
   async function deleteHandler(){
-    await axios.post('http://localhost:3000/room/delete',
-      {
-        roomId : id
-      },
-      {withCredentials : true}
-    )
-    fetchData()
-    navigate('/')
+    try{
+        await axios.post('http://localhost:3000/room/delete',
+          {
+            roomId : id
+          },
+          {withCredentials : true}
+        )
+        fetchData()
+        navigate('/')
+    }
+
+    catch(err){
+      alert(err.response?.data?.msg || "Something went wrong")
+    }
+
   }
 
   async function leaveHandler(){
-    await axios.post('http://localhost:3000/room/leave',
-      {
-        roomId : id
-      },
-      {withCredentials : true}
-    )
-    fetchData()
-    navigate('/')
+    try{
+      await axios.post('http://localhost:3000/room/leave',
+        {
+          roomId : id
+        },
+        {withCredentials : true}
+      )
+      fetchData()
+      navigate('/')
+    }
+    catch(err){
+      alert(err.response?.data?.msg || "Something went wrong") 
+    }
+
   }
 
   useEffect(() => {

@@ -125,6 +125,41 @@ app.post('/room/create' , isLoggedIn ,async (req,res) =>{
     }
 })
 
+
+app.post('/room/delete' , isLoggedIn , async (req,res) => {
+  const {roomId} = req.body;
+  try{
+    const room = await roomModel.findOne({_id : roomId})
+    if(!room)
+      return res.status(404).json({
+        msg : "Room not found"
+    })
+
+    if(room.members[0].toString() !== req.user._id.toString())
+      return res.status(403).json({
+          msg : "Only Creator can delete Room"
+    })
+
+    await roomModel.deleteOne({_id : roomId})
+
+    await messageModel.deleteMany({roomId : roomId})  //deleting all msg of this room
+
+    delete allSocket[room]  // remove room from websocket
+
+    return res.status(200).json({
+      msg : "Room deleted successfully"
+    })
+      
+  }
+  catch(err){
+    return res.status(500).json({
+      msg : "Internal Server error"
+    })
+  }
+  
+})
+
+
 app.post('/msg/create' , isLoggedIn ,async (req,res)=> {
 
   const {roomId, content} = req.body;
