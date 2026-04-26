@@ -5,7 +5,7 @@ async function isLoggedIn(req,res,next) {
     const token = req.cookies.token;
 
     try{
-    const decoded = jwt.verify(token,"secretword")  // if there is error it goes in catch 
+    const decoded = jwt.verify(token,process.env.JWT_SECRET)  // if there is error it goes in catch 
     
         const user = await userModel.findOne({email:decoded.email}).select('-password')
         if(!user)
