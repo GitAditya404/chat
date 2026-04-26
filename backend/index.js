@@ -159,6 +159,30 @@ app.post('/room/delete' , isLoggedIn , async (req,res) => {
   
 })
 
+app.post('/room/leave' , isLoggedIn,async (req,res) => {
+    const {roomid} = req.body;
+
+    try{
+
+      const room = await roomModel.findOne({_id: roomId})
+      if(!room)
+        return res.status(404).json({
+            msg : "Room not found"
+        })
+
+      await roomModel.updateOne({_id : roomId}, {$pull : {members : req.user._id}})
+      return res.status(200).json({
+        msg : "Left room successfully"
+      })
+    }
+
+    catch(err){
+      return res.status(500).json({
+        msg : "Internal Server Error"
+      })
+    }
+})
+
 
 app.post('/msg/create' , isLoggedIn ,async (req,res)=> {
 
