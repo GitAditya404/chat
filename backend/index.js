@@ -9,20 +9,11 @@ import roomModel from './models/roomModel.js'
 import messageModel from './models/messageModel.js'
 import userModel from "./models/userModel.js"
 import verifyUser from "./utils/verifyUser.js"
-import flash from 'connect-flash'
-import expressSession from 'express-session'
 import zod from 'zod'
 
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
-app.use(expressSession({
-    secret :"secretword",
-    resave: false,
-    saveUninitialized : false
-}))
-
-app.use(flash())
 
 app.use(cors({
   origin: "http://localhost:5173",
@@ -35,7 +26,6 @@ app.post('/login',loginUser)
 app.get('/',isLoggedIn ,async (req,res) => {
     const rooms = await roomModel.find({members:req.user._id})
     res.send(rooms)
-    // console.log(rooms)
 })
 
 app.get('/me' , isLoggedIn , (req,res) => {

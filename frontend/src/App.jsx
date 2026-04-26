@@ -7,16 +7,20 @@ import Signup from './pages/Signup.jsx'
 import Room from './pages/Room.jsx'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './pages/Layout.jsx'
+import ProtectedRoute from '../components/ProtectedRoute.jsx'
 
 const App = () => {
   return <>
   <Routes>
-      <Route element={<Layout/>} >
-          <Route path='/' element={<Home/>} />
+      <Route element={<ProtectedRoute children={<Layout/>} />} >
+          <Route path='/' element={<Home/>}/>
           <Route path='/room/:id' element={<Room/>} />
       </Route>
 
-      <Route path='/profile' element={<Profile/>} />
+      <Route path='/profile' element={<ProtectedRoute>
+                                             <Profile/>  {/* you can write as children also */}
+                                    </ProtectedRoute>} />
+
       <Route path='/signup' element={<Signup/>} />
       <Route path='/login' element={<Login/>} />
   </Routes>
