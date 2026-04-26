@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useRef ,useEffect,useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { RoomContext } from '../../context/RoomContext'
 
@@ -13,8 +13,9 @@ const Room = () => {
   const inputRef = useRef(null)
   const lastMsgRef = useRef(null)
   const [isRoomCreator , setIsRoomCreator ] = useState(false)
+  const navigate = useNavigate()
 
-  const {rooms} = useContext(RoomContext)
+  const {rooms,fetchData} = useContext(RoomContext)
 
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
@@ -45,6 +46,28 @@ const Room = () => {
     )
 
       setIsRoomCreator(response.data)
+  }
+
+  async function deleteHandler(){
+    await axios.post('http://localhost:3000/room/delete',
+      {
+        roomId : id
+      },
+      {withCredentials : true}
+    )
+    fetchData()
+    navigate('/')
+  }
+
+  async function leaveHandler(){
+    await axios.post('http://localhost:3000/room/leave',
+      {
+        roomId : id
+      },
+      {withCredentials : true}
+    )
+    fetchData()
+    navigate('/')
   }
 
   useEffect(() => {
