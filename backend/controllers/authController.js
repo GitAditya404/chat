@@ -100,7 +100,8 @@ export const loginUser = async (req,res) => {
                 secure: true,
                 sameSite: "none"
             })
-            res.send('cookie stored')
+            console.log("token stored")
+            return res.send('cookie stored')
         });
     }
 
