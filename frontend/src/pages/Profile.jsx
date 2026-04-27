@@ -195,7 +195,7 @@ return (
 
           </div>
 
-          <div className='flex border'>
+          <div className='flex '>
           <button onClick={saveHandler} className="mt-8 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md">
             Save
           </button>
