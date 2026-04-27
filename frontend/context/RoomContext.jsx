@@ -9,7 +9,7 @@ export function RoomsProvider({children}){
     const [rooms, setRooms] = useState([])
 
     async function fetchData(){
-        const resp = await axios.get('http://localhost:3000/',
+        const resp = await axios.get('https://chat-backend-9hug.onrender.com/',
             {
                 withCredentials: true
             }

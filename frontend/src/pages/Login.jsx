@@ -10,7 +10,7 @@ const Login = () => {
     
     async function loginHandler() {
         try{
-            const resp = await axios.post('http://localhost:3000/login',
+            const resp = await axios.post('https://chat-backend-9hug.onrender.com/login',
                 {
                     email: emailRef.current.value,
                     password : passwordRef.current.value 

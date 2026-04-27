@@ -11,7 +11,7 @@ const Profile = () => {
   async function saveHandler(){
 
     try{
-      const response = await axios.post('http://localhost:3000/profile/save',
+      const response = await axios.post('https://chat-backend-9hug.onrender.com/profile/save',
       {
         data : data
       },
@@ -36,7 +36,7 @@ const Profile = () => {
 
   async function logOut(){
     try{
-      await axios.post('http://localhost:3000/logout',
+      await axios.post('https://chat-backend-9hug.onrender.com/logout',
         {},
         {
           withCredentials : true
@@ -57,7 +57,7 @@ const Profile = () => {
   useEffect(() => {
     async function fetchData(){
       try{
-          const response = await axios.get('http://localhost:3000/profile',
+          const response = await axios.get('https://chat-backend-9hug.onrender.com/profile',
           {
             withCredentials : true
           }

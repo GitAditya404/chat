@@ -11,8 +11,11 @@ import messageModel from './models/messageModel.js'
 import userModel from "./models/userModel.js"
 import verifyUser from "./utils/verifyUser.js"
 import zod from 'zod'
+import http from 'http'
 
 const app = express()
+const server = http.createServer(app)
+
 app.use(express.json())
 app.use(cookieParser())
 
@@ -137,7 +140,7 @@ app.post('/room/delete' , isLoggedIn , async (req,res) => {
 
     await messageModel.deleteMany({roomId : roomId})  //deleting all msg of this room
 
-    delete allSocket[room]  // delete room from websocket
+    delete allSocket[roomId]  // delete room from websocket
 
     return res.status(200).json({
       msg : "Room deleted successfully"
@@ -257,10 +260,14 @@ app.post('/profile/save' , isLoggedIn , async (req,res) => {
 
 })
 
-app.listen(process.env.PORT || 3000)
+// app.listen(process.env.PORT || 3000)
+server.listen(process.env.PORT || 3000, () => {
+  console.log("server running");
+});
 
                                   //WEBSOCKET SERVER
-const wss = new WebSocketServer({port:8080})  
+// const wss = new WebSocketServer({port:8080})  
+const wss = new WebSocketServer({ server });
 
   let allSocket = {}
 
@@ -314,7 +321,9 @@ const wss = new WebSocketServer({port:8080})
         })
         socket.on('close',() => {
           const roomId = socket.room
-          allSocket[roomId] = allSocket[roomId].filter((x) => x!== socket)
+          if(allSocket[roomId]){
+              allSocket[roomId] = allSocket[roomId].filter(x => x !== socket)
+            }
         })
 
 })
