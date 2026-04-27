@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: true,
   credentials: true
 }));
 
@@ -257,7 +257,7 @@ app.post('/profile/save' , isLoggedIn , async (req,res) => {
 
 })
 
-app.listen(3000)
+app.listen(process.env.PORT || 3000)
 
                                   //WEBSOCKET SERVER
 const wss = new WebSocketServer({port:8080})  
