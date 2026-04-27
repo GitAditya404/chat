@@ -42,7 +42,12 @@ export const registerUser = async  (req,res) => {
                 password : hash
             })
             const token  = generateToken(email)
-            res.cookie("token", token);
+            // res.cookie("token", token);
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+            })
             console.log('token created')
             res.send(createdUser)
 
@@ -89,7 +94,12 @@ export const loginUser = async (req,res) => {
                 })
             
             const token = generateToken(email)
-            res.cookie("token" , token)
+            // res.cookie("token" , token)
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+            })
             res.send('cookie stored')
         });
     }
@@ -104,7 +114,12 @@ export const loginUser = async (req,res) => {
 
 export const logout = (req,res) => {
     try{
-        res.clearCookie("token")
+        // res.clearCookie("token")
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none"
+        })
         return res.status(200).json({msg : "Logout Successful"})
     }
 

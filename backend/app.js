@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-  origin: "chat-frontend-ivory-eta.vercel.app",
+  origin: "https://chat-frontend-ivory-eta.vercel.app",
   credentials: true
 }));
 
