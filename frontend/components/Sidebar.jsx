@@ -36,7 +36,7 @@ const Sidebar = ({rooms}) => {
           >
             <img
               className="size-5 invert brightness-200"
-              src="../public/add.png"
+              src="/add.png"
               alt="Add"
             />
           </button>

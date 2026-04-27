@@ -52,7 +52,7 @@ const Login = () => {
             </div>
 
             <div className="w-1/2 h-full  rounded-xl overflow-hidden">
-                <img className="h-full w-full object-cover  " src="../public/loginimg.png" alt="" />
+                <img className="h-full w-full object-cover  " src="/loginimg.png" alt="" />
             </div>
 
 
