@@ -259,11 +259,11 @@ const Room = () => {
             ref={inputRef}
             type="text"
             placeholder="Type a message..."
-            className="flex-1 h-12 rounded-full px-5 outline-none text-black"
+            className="flex-1 h-12 rounded-full px-5 outline-none bg-white text-black placeholder-gray-500"
           />
           <button
             onClick={clickHandler}
-            className="bg-blue-500 hover:bg-blue-600 transition px-6 rounded-full text-white font-medium"
+            className="bg-blue-500 hover:bg-blue-600 transition cursor-pointer px-6 rounded-full text-white font-medium"
           >
             Send
           </button>
