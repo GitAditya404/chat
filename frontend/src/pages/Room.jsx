@@ -185,8 +185,14 @@ const Room = () => {
       {/* Messages Section */}
         <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#111827]">
           <div className="max-w-4xl mx-auto space-y-3">
-
-            {message.map((e, i) => {
+        {message.length ===0 ? (
+                <div className="flex justify-center items-center h-full">
+                    <h1 className="text-gray-400 text-lg md:text-xl font-medium bg-[#1f2937] px-6 py-3 rounded-xl shadow">
+                      No Messages Yet
+                    </h1>
+                  </div>
+              ):(
+            message.map((e, i) => {
 
               let renderName = false;
               const prevSender = i > 0 ? message[i - 1].senderName : null;
@@ -248,7 +254,9 @@ const Room = () => {
                   </div>
                 </React.Fragment>
               );
-            })}
+            })
+              ) }
+
           </div>
         </div>
 

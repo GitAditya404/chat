@@ -37,6 +37,13 @@ app.get('/me' , isLoggedIn , (req,res) => {
   res.status(200).send('user verified')
 })
 
+app.get('/health' , (req,res) => {
+  res.status(200).json({
+    status : "OK" , 
+    time : new Date()
+  })
+})
+
 app.get('/creator', isLoggedIn ,async (req,res) => {
   const {roomId} = req.query;
 

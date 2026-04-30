@@ -83,7 +83,7 @@ export const loginUser = async (req,res) => {
         const user = await userModel.findOne({email})
         if(!user)
             return res.status(404).json({
-                msg: "Email Incorrect"
+                msg: "Email not registered"
             })
 
         const hash = user.password
