@@ -7,7 +7,7 @@ const ProtectedRoute = ({children}) => {
     useEffect(() => {
         async function checkAuth (){
             try{
-                await axios.get('https://chat-backend-9hug.onrender.com/me',
+                await axios.get(`${import.meta.env.VITE_API_URL}/me`,
                     {withCredentials: true}
                 )
                 setIsAuth(true)

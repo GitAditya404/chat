@@ -21,7 +21,7 @@ const Room = () => {
 
 
   const fetchMsg = async () => {
-    const resp = await axios.get('https://chat-backend-9hug.onrender.com/msg',
+    const resp = await axios.get(`${import.meta.env.VITE_API_URL}/msg`,
       {
         params : {roomId : id }, //data in get request is usually sent in params , also axios.get() only accepts 2 arguments ; so it is being sent like this
         withCredentials : true
@@ -38,7 +38,7 @@ const Room = () => {
 
 
   async function checkCreator (){
-    const response = await axios.get('https://chat-backend-9hug.onrender.com/creator',
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/creator`,
       {
         params : {roomId : id},
         withCredentials : true
@@ -50,7 +50,7 @@ const Room = () => {
 
   async function deleteHandler(){
     try{
-        await axios.post('https://chat-backend-9hug.onrender.com/room/delete',
+        await axios.post(`${import.meta.env.VITE_API_URL}/room/delete`,
           {
             roomId : id
           },
@@ -69,7 +69,7 @@ const Room = () => {
   async function leaveHandler(){
 
     try{
-      await axios.post('https://chat-backend-9hug.onrender.com/room/leave',
+      await axios.post(`${import.meta.env.VITE_API_URL}/room/leave`,
         {
           roomId : id
         },
@@ -85,7 +85,7 @@ const Room = () => {
   }
 
   useEffect(() => {
-    const ws = new WebSocket('wss://chat-backend-9hug.onrender.com')
+    const ws = new WebSocket(import.meta.env.VITE_WS_URL)
     wsRef.current = ws
 
     ws.onopen = () => {   // when websocket connectn has been established with the server , run this fn
@@ -121,7 +121,7 @@ const Room = () => {
 
       const newMsg = {"content" : msg, "timestamp" : new Date(), "type" : "sent" , "senderName" :"you"}
 
-      const resp = await axios.post('https://chat-backend-9hug.onrender.com/msg/create',
+      const resp = await axios.post(`${import.meta.env.VITE_API_URL}/msg/create`,
         {
           roomId : id ,
           content : msg 

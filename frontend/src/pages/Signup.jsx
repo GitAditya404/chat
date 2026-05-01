@@ -15,7 +15,7 @@ const Signup = () => {
     async  function clickHandler() {
 
         try{
-        const resp = await axios.post("https://chat-backend-9hug.onrender.com/signup",{
+        const resp = await axios.post(`${import.meta.env.VITE_API_URL}/signup`,{
             fullname : nameRef.current.value ,
             email :emailRef.current.value , 
             password : passwordRef.current.value

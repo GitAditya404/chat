@@ -9,7 +9,7 @@ export function RoomsProvider({children}){
     const [rooms, setRooms] = useState([])
 
     async function fetchData(){
-        const resp = await axios.get('https://chat-backend-9hug.onrender.com/',
+        const resp = await axios.get(`${import.meta.env.VITE_API_URL}/`,
             {
                 withCredentials: true
             }

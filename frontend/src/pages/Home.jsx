@@ -13,7 +13,7 @@ const Home = () => {
   async function joinClick(){
     
     try{
-      const response = await axios.post('https://chat-backend-9hug.onrender.com/room/join',
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/room/join`,
         {
           name: joinRef.current.value
         },
@@ -42,7 +42,7 @@ const Home = () => {
 
   async function createClick(){
     try{
-      const resp = await axios.post('https://chat-backend-9hug.onrender.com/room/create',
+      const resp = await axios.post(`${import.meta.env.VITE_API_URL}/room/create`,
         {
           name: createRef.current.value
         },
