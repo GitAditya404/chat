@@ -16,7 +16,7 @@ router.post('/create' , isLoggedIn ,async (req,res)=> { // it si /msg/create
   return res.status(200).send('message saved in DB')
 })
 
-router.get('/', isLoggedIn,async (req,res) => {  // it is /msg route
+router.get('/all', isLoggedIn,async (req,res) => {  // it is /msg route
   const {roomId} = req.query
 
   let data = await messageModel.find({roomId}).populate('senderId')

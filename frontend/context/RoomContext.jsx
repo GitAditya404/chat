@@ -9,7 +9,7 @@ export function RoomsProvider({children}){
     const [rooms, setRooms] = useState([])
 
     async function fetchData(){
-        const resp = await axios.get(`${import.meta.env.VITE_API_URL}/`,
+        const resp = await axios.get(`${import.meta.env.VITE_API_URL}/room/all`,
             {
                 withCredentials: true
             }

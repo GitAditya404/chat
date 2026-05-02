@@ -3,6 +3,13 @@ const router = express.Router()
 import roomModel from '../models/roomModel.js';
 import zod from 'zod'
 import isLoggedIn from '../middlewares/isLoggedIn.js';
+import messageModel from '../models/messageModel.js'
+import {allSocket} from '../webSocket.js'
+
+router.get('/all',isLoggedIn ,async (req,res) => {
+    const rooms = await roomModel.find({members:req.user._id})
+    res.send(rooms)
+})
 
 router.get('/creator', isLoggedIn ,async (req,res) => {
   const {roomId} = req.query;
@@ -13,7 +20,7 @@ router.get('/creator', isLoggedIn ,async (req,res) => {
   return res.status(200).send(false)
 })
 
-router.post('/room/join', isLoggedIn,async (req,res) => {
+router.post('/join', isLoggedIn,async (req,res) => {  //route-> /room/join
 
   const bodySchema = zod.object({
         name: zod.string().regex(/^[a-zA-Z0-9]+$/)
@@ -51,7 +58,7 @@ router.post('/room/join', isLoggedIn,async (req,res) => {
 
 })
 
-router.post('/room/create' , isLoggedIn ,async (req,res) =>{
+router.post('/create' , isLoggedIn ,async (req,res) =>{
 
     const bodySchema = zod.object({
         name: zod.string().regex(/^[a-zA-Z0-9]+$/)
@@ -88,7 +95,7 @@ router.post('/room/create' , isLoggedIn ,async (req,res) =>{
 })
 
 
-router.post('/room/delete' , isLoggedIn , async (req,res) => {
+router.post('/delete' , isLoggedIn , async (req,res) => {
   const {roomId} = req.body;
   try{
     const room = await roomModel.findOne({_id : roomId})
@@ -105,9 +112,7 @@ router.post('/room/delete' , isLoggedIn , async (req,res) => {
     await roomModel.deleteOne({_id : roomId})
 
     await messageModel.deleteMany({roomId : roomId})  //deleting all msg of this room
-
     delete allSocket[roomId]  // delete room from websocket
-
     return res.status(200).json({
       msg : "Room deleted successfully"
     })
@@ -121,7 +126,7 @@ router.post('/room/delete' , isLoggedIn , async (req,res) => {
   
 })
 
-router.post('/room/leave' , isLoggedIn,async (req,res) => {
+router.post('/leave' , isLoggedIn,async (req,res) => {
     const {roomId} = req.body;
 
     try{

@@ -21,7 +21,7 @@ const Room = () => {
 
 
   const fetchMsg = async () => {
-    const resp = await axios.get(`${import.meta.env.VITE_API_URL}/msg`,
+    const resp = await axios.get(`${import.meta.env.VITE_API_URL}/msg/all`,
       {
         params : {roomId : id }, //data in get request is usually sent in params , also axios.get() only accepts 2 arguments ; so it is being sent like this
         withCredentials : true
@@ -38,7 +38,7 @@ const Room = () => {
 
 
   async function checkCreator (){
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/creator`,
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/room/creator`,
       {
         params : {roomId : id},
         withCredentials : true
