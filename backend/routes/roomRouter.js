@@ -1,6 +1,10 @@
+import express from 'express'
+const router = express.Router()
+import roomModel from '../models/roomModel';
+import zod from 'zod'
+import isLoggedIn from '../middlewares/isLoggedIn';
 
-
-app.get('/creator', isLoggedIn ,async (req,res) => {
+router.get('/creator', isLoggedIn ,async (req,res) => {
   const {roomId} = req.query;
 
   const room = await roomModel.findOne({_id : roomId})
@@ -9,7 +13,7 @@ app.get('/creator', isLoggedIn ,async (req,res) => {
   return res.status(200).send(false)
 })
 
-app.post('/room/join', isLoggedIn,async (req,res) => {
+router.post('/room/join', isLoggedIn,async (req,res) => {
 
   const bodySchema = zod.object({
         name: zod.string().regex(/^[a-zA-Z0-9]+$/)
@@ -47,7 +51,7 @@ app.post('/room/join', isLoggedIn,async (req,res) => {
 
 })
 
-app.post('/room/create' , isLoggedIn ,async (req,res) =>{
+router.post('/room/create' , isLoggedIn ,async (req,res) =>{
 
     const bodySchema = zod.object({
         name: zod.string().regex(/^[a-zA-Z0-9]+$/)
@@ -84,7 +88,7 @@ app.post('/room/create' , isLoggedIn ,async (req,res) =>{
 })
 
 
-app.post('/room/delete' , isLoggedIn , async (req,res) => {
+router.post('/room/delete' , isLoggedIn , async (req,res) => {
   const {roomId} = req.body;
   try{
     const room = await roomModel.findOne({_id : roomId})
@@ -117,7 +121,7 @@ app.post('/room/delete' , isLoggedIn , async (req,res) => {
   
 })
 
-app.post('/room/leave' , isLoggedIn,async (req,res) => {
+router.post('/room/leave' , isLoggedIn,async (req,res) => {
     const {roomId} = req.body;
 
     try{

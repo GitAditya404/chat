@@ -6,7 +6,6 @@ import indexRouter from './routes/indexRouter.js'
 import roomRouter from './routes/roomRouter.js'
 import messageRouter from './routes/messageRouter.js'
 import usersRouter from './routes/usersRouter.js'
-import profileRouter from './routes/profileRouter.js'
 
 const app = express()
 app.use(express.json())
@@ -21,5 +20,4 @@ app.use(cors({
 app.use('/', indexRouter)
 app.use('/user' , usersRouter)
 app.use('/room',roomRouter )
-app.use('/profile', profileRouter)
-app.use('/message', messageRouter)
+app.use('/msg', messageRouter)

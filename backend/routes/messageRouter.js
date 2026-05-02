@@ -1,5 +1,9 @@
+import express from 'express'
+const router = express.Router()
+import messageModel from '../models/messageModel.js'
+import isLoggedIn from '../middlewares/isLoggedIn.js'
 
-app.post('/msg/create' , isLoggedIn ,async (req,res)=> {
+router.post('/create' , isLoggedIn ,async (req,res)=> { // it si /msg/create
 
   const {roomId, content} = req.body;
 
@@ -12,7 +16,7 @@ app.post('/msg/create' , isLoggedIn ,async (req,res)=> {
   return res.status(200).send('message saved in DB')
 })
 
-app.get('/msg', isLoggedIn,async (req,res) => {
+router.get('/', isLoggedIn,async (req,res) => {  // it is /msg route
   const {roomId} = req.query
 
   let data = await messageModel.find({roomId}).populate('senderId')

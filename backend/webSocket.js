@@ -1,13 +1,13 @@
 import { WebSocketServer } from "ws"
-
+import verifyUser from './utils/verifyUser.js'
                                 //WEBSOCKET SERVER
-
+                                
+export  let allSocket = {}
 export const webSocket = (server) => {
 
     // const wss = new WebSocketServer({port:8080})  
     const wss = new WebSocketServer({ server });  // attaching websocket to same http server instead of running separate server on port 8080
 
-    let allSocket = {}
 
     wss.on("connection" , (socket ,req) => {  //whenever there is a connectn to this webSocketServer call this fn and give it a socket
         console.log('user Connected')

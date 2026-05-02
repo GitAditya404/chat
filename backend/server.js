@@ -1,9 +1,10 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+dotenv.config()
 import app from './app.js'
 import db from './config/db.js'
 import http from 'http'
 
-import webSocket from './webSocket.js'
+import {webSocket} from './webSocket.js'
 const server = http.createServer(app)
 webSocket(server)
 
