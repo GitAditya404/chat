@@ -15,7 +15,7 @@ const Signup = () => {
     async  function clickHandler() {
 
         try{
-        const resp = await axios.post(`${import.meta.env.VITE_API_URL}/signup`,{
+        const resp = await axios.post(`${import.meta.env.VITE_API_URL}/user/signup`,{
             fullname : nameRef.current.value ,
             email :emailRef.current.value , 
             password : passwordRef.current.value
