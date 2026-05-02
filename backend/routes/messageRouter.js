@@ -43,3 +43,5 @@ router.get('/', isLoggedIn,async (req,res) => {  // it is /msg route
   })
   return res.status(200).send(data)
 })
+
+export default router

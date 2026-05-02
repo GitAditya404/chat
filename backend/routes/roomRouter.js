@@ -1,8 +1,8 @@
 import express from 'express'
 const router = express.Router()
-import roomModel from '../models/roomModel';
+import roomModel from '../models/roomModel.js';
 import zod from 'zod'
-import isLoggedIn from '../middlewares/isLoggedIn';
+import isLoggedIn from '../middlewares/isLoggedIn.js';
 
 router.get('/creator', isLoggedIn ,async (req,res) => {
   const {roomId} = req.query;
@@ -146,3 +146,5 @@ router.post('/room/leave' , isLoggedIn,async (req,res) => {
       })
     }
 })
+
+export default router

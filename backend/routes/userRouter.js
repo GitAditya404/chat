@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 import userModel from '../models/userModel.js'
-
+import isLoggedIn from '../middlewares/isLoggedIn.js'
 import {registerUser , loginUser , logout} from '../controllers/authController.js'
 
 router.post('/signup',registerUser)
@@ -44,3 +44,5 @@ router.post('/profile/save' , isLoggedIn , async (req,res) => {
   }
 
 })
+
+export default router

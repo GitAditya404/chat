@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 import roomModel from '../models/roomModel.js'
-
+import isLoggedIn from '../middlewares/isLoggedIn.js'
 
 router.get('/',isLoggedIn ,async (req,res) => {
     const rooms = await roomModel.find({members:req.user._id})
@@ -19,3 +19,5 @@ router.get('/health' , (req,res) => {
     time : new Date()
   })
 })
+
+export default router
