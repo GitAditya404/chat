@@ -3,6 +3,7 @@ const router = express.Router()
 import userModel from '../models/userModel.js'
 import isLoggedIn from '../middlewares/isLoggedIn.js'
 import {registerUser , loginUser , logout} from '../controllers/authController.js'
+import upload from '../middlewares/multerConfig.js'
 
 router.post('/signup',registerUser)   // route -> /user/signup
 router.post('/login',loginUser)
@@ -43,6 +44,40 @@ router.post('/profile/save' , isLoggedIn , async (req,res) => {
     return res.status(500).json({msg : "Internal Server Error"})
   }
 
+})
+
+router.post('/profile/pic', upload.single('profileImg') , async (req,res) => {
+  try{
+    //does file exists
+    if(!req.file)
+      return res.status(400).json({
+        msg : "No image uploaded"
+      })
+    
+    // convert buffer to base64 b/c cloudinary accepts base64
+    const imgBase64 = req.file.buffer.toString('base64')
+    const imgUri = `data:${req.file.mimetype};base64,${imgBase64}`;
+
+    //uploading in cloudinary
+    const result = await cloudinary.uploader.upload(imgUri, {
+        folder: "profile_images",
+    });
+
+    await userModel.findByIdAndUpdate(req.user._id, {
+      profileImage: result.secure_url,
+    });
+    
+    res.json({
+      msg : "Upload Successful",
+      imgUrl = result.secure_url
+    })
+  }
+
+  catch(err){
+    res.status(500).json({
+      msg :"Internal Server error"
+    })
+  }
 })
 
 export default router
