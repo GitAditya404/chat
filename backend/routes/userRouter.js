@@ -4,6 +4,7 @@ import userModel from '../models/userModel.js'
 import isLoggedIn from '../middlewares/isLoggedIn.js'
 import {registerUser , loginUser , logout} from '../controllers/authController.js'
 import upload from '../middlewares/multerConfig.js'
+import cloudinary from '../config/cloudinary.js'
 
 router.post('/signup',registerUser)   // route -> /user/signup
 router.post('/login',loginUser)
@@ -46,7 +47,7 @@ router.post('/profile/save' , isLoggedIn , async (req,res) => {
 
 })
 
-router.post('/profile/pic', upload.single('profileImg') , async (req,res) => {
+router.post('/profile/pic',isLoggedIn, upload.single('profileImg') , async (req,res) => {
   try{
     //does file exists
     if(!req.file)
@@ -62,18 +63,20 @@ router.post('/profile/pic', upload.single('profileImg') , async (req,res) => {
     const result = await cloudinary.uploader.upload(imgUri, {
         folder: "profile_images",
     });
-
-    await userModel.findByIdAndUpdate(req.user._id, {
-      profileImage: result.secure_url,
+    // console.log(result)
+    
+    const value = await userModel.findByIdAndUpdate(req.user._id, {
+      profilePic: result.secure_url,  // result gives secure_url which has img link
     });
     
     res.json({
       msg : "Upload Successful",
-      imgUrl = result.secure_url
+      imgUrl : result.secure_url
     })
   }
 
   catch(err){
+    console.log(err)
     res.status(500).json({
       msg :"Internal Server error"
     })

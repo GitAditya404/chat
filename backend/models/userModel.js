@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     phoneNo : Number,
     profilePic : {
         type : String,
-        default : 'defaultImg'
+        default : 'defaultImg.jpg'
     }       
 })
 

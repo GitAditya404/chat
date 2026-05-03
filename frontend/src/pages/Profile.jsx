@@ -7,7 +7,7 @@ const Profile = () => {
   const [data , setData] = useState(null)
   const [responseMsg , setResponseMsg] = useState("")
   const navigate = useNavigate()
-
+  
   async function saveHandler(){
 
     try{
@@ -54,8 +54,7 @@ const Profile = () => {
     }
   }
 
-  useEffect(() => {
-    async function fetchData(){
+  async function fetchProfile(){
       try{
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/profile`,
           {
@@ -75,9 +74,40 @@ const Profile = () => {
         }, 4000);
       }
 
-    }
-    fetchData()
+  }
+
+  useEffect(() => {
+    fetchProfile()
   },[])
+
+  async function imgUploadHandler(e){
+    const file = e.target.files[0]
+    if(!file)
+      return
+
+    try{
+      const formData = new FormData(); // create object of FormData type to upload file, b/c file upload needs -> FormData
+      formData.append('profileImg',file)
+
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/profile/pic`,
+        formData,
+      {
+        withCredentials :true,
+        headers : {
+          "Content-Type" : "multipart/form-data"
+        }
+      }
+    )
+    setResponseMsg(response.data.msg)
+    fetchProfile()
+    }
+
+    catch(err){
+      
+      setResponseMsg(err.response?.data.msg || "Upload Failed")
+    }
+
+  }
 
 return (
     <div className="min-h-screen bg-gray-100">
@@ -97,7 +127,7 @@ return (
       </div>
 
       {/* Main Card */}
-      <div className="max-w-6xl mx-auto relative -mt-24  flex gap-8 px-6">
+      <div className="max-w-6xl mx-auto relative -mt-28  flex gap-8 px-6">
 
         {/* Left Profile Card */}
       <div className="w-1/3 bg-white rounded-3xl shadow-xl overflow-hidden h-fit">
@@ -105,9 +135,14 @@ return (
           {/* Top section */}
           <div className="flex flex-col items-center px-8 py-10 bg-linear-to-b from-blue-50 to-white border-b">
             <img
-              src="/default_img.jpg"
+              src = {data?.profilePic || "defaultImg.jpg"}
               alt=""
               className="w-36 h-36 rounded-full border-4 border-white shadow-lg object-cover"
+            />
+            <input 
+              onChange={imgUploadHandler}
+              type="file" 
+              className="mt-2 ml-16 text-sm text-gray-700 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
             />
 
             <h2 className="mt-5 text-3xl font-bold text-gray-800 text-center">
