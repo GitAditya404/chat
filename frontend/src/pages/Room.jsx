@@ -3,19 +3,20 @@ import { useState, useRef ,useEffect,useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { RoomContext } from '../../context/RoomContext'
+import { WsContext } from '../../context/WebSocketContext'
 
 const Room = () => {
       // const [message , setMessage] = useState([{content:'hi there', timestamp:new Date(),type : "received"},{content:'hello', timestamp:new Date(),type :"received"}])
   const [message , setMessage] = useState([])
 
   const {id} = useParams();
-  const wsRef = useRef()
   const inputRef = useRef(null)
   const lastMsgRef = useRef(null)
   const [isRoomCreator , setIsRoomCreator ] = useState(false)
   const navigate = useNavigate()
 
   const {rooms,fetchData} = useContext(RoomContext)
+  const {ws} = useContext(WsContext)
 
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
@@ -23,7 +24,7 @@ const Room = () => {
   const fetchMsg = async () => {
     const resp = await axios.get(`${import.meta.env.VITE_API_URL}/msg/all`,
       {
-        params : {roomId : id }, //data in get request is usually sent in params , also axios.get() only accepts 2 arguments ; so it is being sent like this
+        params : {roomId : id }, //data in get request is sent in params , also axios.get() only accepts 2 arguments ; so it is being sent like this
         withCredentials : true
       }
     )
@@ -47,6 +48,17 @@ const Room = () => {
 
       setIsRoomCreator(response.data)
   }
+
+  // async function fetchStatus(){
+  //   const response = await axios.get(`${import.meta.env.VITE_API_URL}/status`,
+  //     {
+  //       params : {roomId : id},
+  //       withCredentials : true
+  //     }
+  //   )
+
+
+  // }
 
   async function deleteHandler(){
     try{
@@ -85,19 +97,13 @@ const Room = () => {
   }
 
   useEffect(() => {
-    const ws = new WebSocket(import.meta.env.VITE_WS_URL)
-    wsRef.current = ws
 
-    ws.onopen = () => {   // when websocket connectn has been established with the server , run this fn
-
-      ws.send(JSON.stringify({
+    ws.send(JSON.stringify({
         type : "join",
         payload : {
           roomId : id
         }
-      }))
-    }
-
+    }))
 
     ws.onmessage = (event) => {    //message from server->client
       const parsedMsg = JSON.parse(event.data);
@@ -110,8 +116,7 @@ const Room = () => {
     
     return () => {
       setMessage([])
-      console.log("cleanup ran")
-      ws.close()
+      // console.log("cleanup ran")
     }
 
   },[id])
@@ -131,7 +136,7 @@ const Room = () => {
 
       setMessage([...message,newMsg])
 
-      wsRef.current.send(JSON.stringify({
+      ws.send(JSON.stringify({
         type :'chat',
         payload: {
           msg : msg
