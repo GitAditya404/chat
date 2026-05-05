@@ -3,8 +3,10 @@ import { Navigate } from "react-router-dom"
 import axios from "axios"
 const ProtectedRoute = ({children}) => {
     const [isAuth, setIsAuth] = useState(null)
+    // console.log("render")
 
     useEffect(() => {
+        // console.log('mounted')
         async function checkAuth (){
             try{
                 await axios.get(`${import.meta.env.VITE_API_URL}/me`,

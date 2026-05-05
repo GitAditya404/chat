@@ -6,9 +6,9 @@ export function WsProvider ({children}){
     const [ws , setWs]  = useState(null);
 
     useEffect(() => {
-        const socket = new WebSocket(import.meta.env.VITE_WS_URL)
+        const socket = new WebSocket(import.meta.env.VITE_WS_URL)  //establish connectn
 
-        socket.onopen = () => { 
+        socket.onopen = () => { // when websocket connectn has been established with the server , run this fn
             console.log("WebSocket connection is now ready")
         }
         setWs(socket)

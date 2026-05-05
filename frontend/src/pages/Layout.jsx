@@ -5,7 +5,7 @@ import { RoomContext } from "../../context/RoomContext"
 
 const Layout = () => {
 
-    const {rooms,fetchData} = useContext(RoomContext)
+    const {rooms} = useContext(RoomContext)
 
     return (
         <div className='flex w-full h-screen bg-black text-white'>

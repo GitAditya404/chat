@@ -17,9 +17,12 @@ const App = () => {
           <Route path='/room/:id' element={<Room/>} />
       </Route>
 
-      <Route path='/profile' element={<ProtectedRoute>
-                                             <Profile/>  {/* you can write as children also */}
-                                    </ProtectedRoute>} />
+    <Route path='/profile' element={<ProtectedRoute children={<Profile/>}/>}/>
+
+        {/* you can write as children also */}
+      {/* <Route path='/profile' element={<ProtectedRoute>
+                                             <Profile/>  
+                                    </ProtectedRoute>} /> */}
 
       <Route path='/signup' element={<Signup/>} />
       <Route path='/login' element={<Login/>} />
