@@ -7,10 +7,6 @@ const Layout = () => {
 
     const {rooms,fetchData} = useContext(RoomContext)
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-
     return (
         <div className='flex w-full h-screen bg-black text-white'>
         
