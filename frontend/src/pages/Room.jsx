@@ -16,7 +16,7 @@ const Room = () => {
   const navigate = useNavigate()
 
   const {rooms,fetchData} = useContext(RoomContext)
-  const {ws} = useContext(WsContext)
+  const {wsRef} = useContext(WsContext)
 
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
@@ -98,25 +98,33 @@ const Room = () => {
 
   useEffect(() => {
 
-    ws.send(JSON.stringify({
+    wsRef.current?.send(JSON.stringify({
         type : "join",
         payload : {
           roomId : id
         }
     }))
-
-    ws.onmessage = (event) => {    //message from server->client
-      const parsedMsg = JSON.parse(event.data);
-      const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received" , "senderName" : parsedMsg.senderName} //changed date b/c date has become string so changed it to new Date type
-      setMessage(m => [...m,value])
+    if(wsRef.current){
+      wsRef.current.onmessage = (event) => {    //message from server->client
+        const parsedMsg = JSON.parse(event.data);
+        const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received" , "senderName" : parsedMsg.senderName} //changed date b/c date has become string so changed it to new Date type
+        setMessage(m => [...m,value])
+      }
     }
+
 
     fetchMsg()
     checkCreator()
     
     return () => {
       setMessage([])
-      // console.log("cleanup ran")
+
+      wsRef.current.send(JSON.stringify(
+      {
+        type : "leave"
+      }
+    ))
+    
     }
 
   },[id])
@@ -136,7 +144,7 @@ const Room = () => {
 
       setMessage([...message,newMsg])
 
-      ws.send(JSON.stringify({
+      wsRef.current?.send(JSON.stringify({
         type :'chat',
         payload: {
           msg : msg

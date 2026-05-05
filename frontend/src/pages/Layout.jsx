@@ -5,7 +5,11 @@ import { RoomContext } from "../../context/RoomContext"
 
 const Layout = () => {
 
-    const {rooms} = useContext(RoomContext)
+    const {rooms,fetchData} = useContext(RoomContext)
+
+    useEffect(() => {
+        fetchData() // calling it here instead of calling it in RoomContext b/c there it will run when RoomContext mounts (before login/signup when user opens the website)
+    },[])
 
     return (
         <div className='flex w-full h-screen bg-black text-white'>

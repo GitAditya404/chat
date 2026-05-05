@@ -17,7 +17,6 @@ export function RoomsProvider({children}){
         setRooms(resp.data);
     }
     
-    fetchData()
 
     return (
     <RoomContext.Provider value={{ rooms, fetchData }}>

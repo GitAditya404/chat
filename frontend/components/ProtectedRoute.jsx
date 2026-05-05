@@ -1,7 +1,11 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Navigate } from "react-router-dom"
 import axios from "axios"
+import {WsContext} from '../context/WebSocketContext.jsx'
+
 const ProtectedRoute = ({children}) => {
+    
+    const {connectWs} = useContext(WsContext)
     const [isAuth, setIsAuth] = useState(null)
     // console.log("render")
 
@@ -12,13 +16,18 @@ const ProtectedRoute = ({children}) => {
                 await axios.get(`${import.meta.env.VITE_API_URL}/me`,
                     {withCredentials: true}
                 )
+
                 setIsAuth(true)
+                connectWs()  //start websocket connectn only when user is loggedIn 
+                    
             }
             catch(e){
                 setIsAuth(false)
             }
         }
+
         checkAuth()
+
     },[])
 
     if(isAuth === null) 

@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState , useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { WsContext } from '../../context/WebSocketContext'
+
 const Profile = () => {
 
   const [data , setData] = useState(null)
   const [responseMsg , setResponseMsg] = useState("")
   const navigate = useNavigate()
-  
+  const {ws} = useContext(WsContext)
+
   async function saveHandler(){
 
     try{
@@ -42,6 +45,7 @@ const Profile = () => {
           withCredentials : true
         }
       )
+      ws.close();
       navigate('/login')
     }
 
