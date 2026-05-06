@@ -61,9 +61,12 @@ export const webSocket = (server) => {
                 const clients = allSocket[roomId]
 
                 const msgWithTime = {
-                    content: parsedMsg.payload.msg,
-                    senderName : user.fullname,
-                    timestamp : new Date()
+                    type : 'chat',
+                    payload : {
+                        content: parsedMsg.payload.msg,
+                        senderName : user.fullname,
+                        timestamp : new Date()
+                    }
                 }
 
                 clients.forEach((c) => {
@@ -85,20 +88,32 @@ export const webSocket = (server) => {
                 const roomId = socket.room;
                 const clients = allSocket[roomId]
 
-                //Broadcast(send) other user's peerId present in that room to frontend 
-                clients.forEach((c) => {
-                    if(c !=socket)
-                    {
-                        c.send(JSON.stringify({
-                            type : "peerId",
-                            payload : {
-                                peerId : c.peerId
-                            }
-                        }))
-                    }
-                })
-            }
+                //Broadcast(send) peerId to frontend 
 
+                    // 🔹 1. Send existing users' peerIds to new user
+                    clients.forEach((c) => {
+                        if (c !== socket && c.peerId) {
+                            socket.send(JSON.stringify({
+                                type: "peerId",
+                                payload: {
+                                    peerId: c.peerId
+                                }
+                            }));
+                        }
+                    });
+
+                        // 🔹 2. Send new user's peerId to others
+                    clients.forEach((c) => {
+                        if (c !== socket) {
+                            c.send(JSON.stringify({
+                                type: "peerId",
+                                payload: {
+                                    peerId: socket.peerId
+                                }
+                            }));
+                        }
+                    });
+            }
 
         })
         socket.on('close',() => {

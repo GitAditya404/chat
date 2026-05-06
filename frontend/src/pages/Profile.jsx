@@ -9,7 +9,7 @@ const Profile = () => {
   const [data , setData] = useState(null)
   const [responseMsg , setResponseMsg] = useState("")
   const navigate = useNavigate()
-  const {ws} = useContext(WsContext)
+  const {wsRef} = useContext(WsContext)
 
   async function saveHandler(){
 
@@ -45,7 +45,7 @@ const Profile = () => {
           withCredentials : true
         }
       )
-      ws.close();
+      wsRef.current.close();
       navigate('/login')
     }
 

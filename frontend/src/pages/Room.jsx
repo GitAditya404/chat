@@ -135,7 +135,8 @@ const Room = () => {
           setRemotePeerId(parsedMsg.payload.peerId)
 
         if(parsedMsg.type === 'chat'){
-          const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received" , "senderName" : parsedMsg.senderName} //changed date b/c date has become string so changed it to new Date type
+
+          const value  = {"content" : parsedMsg.payload.content , "timestamp" : new Date(parsedMsg.payload.timestamp),"type" : "received" , "senderName" : parsedMsg.payload.senderName} //changed date b/c date has become string so changed it to new Date type
           setMessage(m => [...m,value])
         }
 
