@@ -26,7 +26,7 @@ export const webSocket = (server) => {
                 allSocket[roomId].push(socket);
                 console.log('user joined ' + roomId)
                 socket.room = roomId  //attaching a room field in socket itself , so that later the room of the socket can be identified instantly
-                // console.log(allSocket)
+                console.log(allSocket)
             }
 
             if(parsedMsg.type === 'leave')
@@ -40,7 +40,7 @@ export const webSocket = (server) => {
                     delete allSocket[roomId]; 
                 }
                 console.log('user left ' + roomId)
-                // console.log(allSocket)
+                console.log(allSocket)
 
             }
 
@@ -86,11 +86,18 @@ export const webSocket = (server) => {
                 socket.peerId = parsedMsg.payload.peerId
 
                 const roomId = socket.room;
+
+                    //  SAFETY CHECK
+                if (!roomId || !allSocket[roomId]) {
+                    console.log("No room found for peerId");
+                    return;
+                }
+
                 const clients = allSocket[roomId]
 
                 //Broadcast(send) peerId to frontend 
 
-                    // 🔹 1. Send existing users' peerIds to new user
+                    // Send existing users' peerIds to new user
                     clients.forEach((c) => {
                         if (c !== socket && c.peerId) {
                             socket.send(JSON.stringify({
@@ -102,7 +109,7 @@ export const webSocket = (server) => {
                         }
                     });
 
-                        // 🔹 2. Send new user's peerId to others
+                        // Send new user's peerId to others
                     clients.forEach((c) => {
                         if (c !== socket) {
                             c.send(JSON.stringify({
@@ -116,10 +123,24 @@ export const webSocket = (server) => {
             }
 
         })
+
         socket.on('close',() => {
             // disconnect the websocket connection of socket from which close was initiated
-          console.log("close running")
-            // console.log(allSocket)
+            console.log("close running")
+            const roomId = socket.room;
+
+            if (!roomId || !allSocket[roomId]) return;
+
+            // remove closed socket
+            allSocket[roomId] = allSocket[roomId].filter(
+                (s) => s !== socket
+            );
+
+            // delete empty room
+            if (allSocket[roomId].length === 0) {
+                delete allSocket[roomId];
+            }
+            console.log(allSocket)
         })
 
 })

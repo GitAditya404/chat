@@ -31,6 +31,49 @@ const Room = () => {
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
   useEffect(() => {
+
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: "join",
+        payload: { roomId: id }
+      }))
+    }
+
+    if(wsRef.current){
+      wsRef.current.onmessage = (event) => {    //message from server->client
+        const parsedMsg = JSON.parse(event.data);
+
+        if(parsedMsg.type === 'peerId')
+          setRemotePeerId(parsedMsg.payload.peerId)
+
+        if(parsedMsg.type === 'chat'){
+
+          const value  = {"content" : parsedMsg.payload.content , "timestamp" : new Date(parsedMsg.payload.timestamp),"type" : "received" , "senderName" : parsedMsg.payload.senderName} //changed date b/c date has become string so changed it to new Date type
+          setMessage(m => [...m,value])
+        }
+
+      }
+    }
+
+
+    fetchMsg()
+    checkCreator()
+    
+    return () => {
+      setMessage([])
+
+      wsRef.current.send(JSON.stringify(
+      {
+        type : "leave"
+      }
+    ))
+    
+    }
+
+  },[id])
+
+
+  useEffect(() => {
     const peer = new Peer()  // this connects to peerjs singnaling server,
     // genarates unique peerid , internally configures google stun server , keeps connection alive
 
@@ -136,48 +179,6 @@ const Room = () => {
     }
 
   }
-
-  useEffect(() => {
-
-    if (wsRef.current?.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({
-        type: "join",
-        payload: { roomId: id }
-      }))
-    }
-
-    if(wsRef.current){
-      wsRef.current.onmessage = (event) => {    //message from server->client
-        const parsedMsg = JSON.parse(event.data);
-
-        if(parsedMsg.type === 'peerId')
-          setRemotePeerId(parsedMsg.payload.peerId)
-
-        if(parsedMsg.type === 'chat'){
-
-          const value  = {"content" : parsedMsg.payload.content , "timestamp" : new Date(parsedMsg.payload.timestamp),"type" : "received" , "senderName" : parsedMsg.payload.senderName} //changed date b/c date has become string so changed it to new Date type
-          setMessage(m => [...m,value])
-        }
-
-      }
-    }
-
-
-    fetchMsg()
-    checkCreator()
-    
-    return () => {
-      setMessage([])
-
-      wsRef.current.send(JSON.stringify(
-      {
-        type : "leave"
-      }
-    ))
-    
-    }
-
-  },[id])
 
   async function clickHandler(){
       const msg = inputRef.current.value;
