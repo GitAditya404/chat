@@ -24,8 +24,24 @@ export const webSocket = (server) => {
                 }
 
                 allSocket[roomId].push(socket);
-                console.log('user joined' + roomId)
+                console.log('user joined ' + roomId)
                 socket.room = roomId  //attaching a room field in socket itself , so that later the room of the socket can be identified instantly
+                console.log(allSocket)
+            }
+
+            if(parsedMsg.type === 'leave')
+            {
+                const roomId = socket.room
+                if(allSocket[roomId]){
+                    allSocket[roomId] = allSocket[roomId].filter(x => x !== socket)
+                }
+
+                if (allSocket[roomId].length === 0) { // if no one in room then delete the room also
+                    delete allSocket[roomId]; 
+                }
+                console.log('user left ' + roomId)
+                console.log(allSocket)
+
             }
 
             if(parsedMsg.type === 'chat')
@@ -52,16 +68,43 @@ export const webSocket = (server) => {
 
                 clients.forEach((c) => {
                     if(c!=socket){
-                        c.send(JSON.stringify(msgWithTime))
-                    }
+                        c.send(JSON.stringify(msgWithTime))}
+
                 })   
             }
+
+            if(parsedMsg.type === "peerId")
+            {   
+                // attach peerId in socket like u attached room in socket 
+                //socket = {
+                    // room: "room123",
+                    // peerId: "abc123"
+                    // }
+                socket.peerId = parsedMsg.payload.peerId
+
+                const roomId = socket.room;
+                const clients = allSocket[roomId]
+
+                //Broadcast(send) other user's peerId present in that room to frontend 
+                clients.forEach((c) => {
+                    if(c !=socket)
+                    {
+                        c.send(JSON.stringify({
+                            type : "peerId",
+                            payload : {
+                                peerId : c.peerId
+                            }
+                        }))
+                    }
+                })
+            }
+
+
         })
         socket.on('close',() => {
-          const roomId = socket.room
-          if(allSocket[roomId]){
-              allSocket[roomId] = allSocket[roomId].filter(x => x !== socket)
-            }
+            // disconnect the websocket connection of socket from which close was initiated
+          console.log("close running")
+            console.log(allSocket)
         })
 
 })
