@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { RoomContext } from '../../context/RoomContext'
 import { WsContext } from '../../context/WebSocketContext'
+import Peer from 'peerjs'
 
 const Room = () => {
       // const [message , setMessage] = useState([{content:'hi there', timestamp:new Date(),type : "received"},{content:'hello', timestamp:new Date(),type :"received"}])
@@ -17,9 +18,30 @@ const Room = () => {
 
   const {rooms,fetchData} = useContext(RoomContext)
   const {wsRef} = useContext(WsContext)
+  const peerRef = useRef(null)
+  const [remotePeerId , setRemotePeerId] = useState(null)
 
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
+  useEffect(() => {
+    const peer = new Peer()  // this connects to peerjs singnaling server,
+    // genarates unique peerid , internally configures google stun server , keeps connection alive
+
+    peer.on("open", (id) => { // this runs when connectn to peerJs server is successful
+      console.log("My peer id " , id);
+
+      //sharing ids using websocket
+      wsRef.current?.send(JSON.stringify({
+        type : "peerId",
+        payload : {
+          peerId : id
+        }
+      }))
+
+    })
+
+    peerRef.current = peer ;
+  },[])
 
   const fetchMsg = async () => {
     const resp = await axios.get(`${import.meta.env.VITE_API_URL}/msg/all`,
@@ -104,11 +126,19 @@ const Room = () => {
           roomId : id
         }
     }))
+
     if(wsRef.current){
       wsRef.current.onmessage = (event) => {    //message from server->client
         const parsedMsg = JSON.parse(event.data);
-        const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received" , "senderName" : parsedMsg.senderName} //changed date b/c date has become string so changed it to new Date type
-        setMessage(m => [...m,value])
+
+        if(parsedMsg.type === 'peerId')
+          setRemotePeerId(parsedMsg.payload.peerId)
+
+        if(parsedMsg.type === 'chat'){
+          const value  = {"content" : parsedMsg.content , "timestamp" : new Date(parsedMsg.timestamp),"type" : "received" , "senderName" : parsedMsg.senderName} //changed date b/c date has become string so changed it to new Date type
+          setMessage(m => [...m,value])
+        }
+
       }
     }
 
