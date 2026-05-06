@@ -25,6 +25,8 @@ const Room = () => {
   const myVideoRef = useRef(null)
   const remoteVideoRef = useRef(null)
   const streamRef = useRef(null)
+  const [muteMic , setMuteMic] = useState(false)
+  const [muteVideo, seteMuteVideo] = useState(false)
 
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
@@ -137,12 +139,12 @@ const Room = () => {
 
   useEffect(() => {
 
-    wsRef.current?.send(JSON.stringify({
-        type : "join",
-        payload : {
-          roomId : id
-        }
-    }))
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: "join",
+        payload: { roomId: id }
+      }))
+    }
 
     if(wsRef.current){
       wsRef.current.onmessage = (event) => {    //message from server->client
@@ -251,6 +253,22 @@ const Room = () => {
       myVideoRef.current.srcObject = null
     if (remoteVideoRef.current)
       remoteVideoRef.current.srcObject = null
+  }
+
+  function micToggle(){
+    const audioTrack = streamRef.current?.getAudioTracks()[0]
+    if (!audioTrack) return
+
+    audioTrack.enabled = !audioTrack.enabled
+    setMuteMic(!audioTrack.enabled)
+  }
+
+  function videoToggle(){
+    const videoTrack = streamRef.current?.getVideoTracks()[0]
+    if (!videoTrack) return
+
+    videoTrack.enabled = !videoTrack.enabled
+    seteMuteVideo(!videoTrack.enabled)
   }
 
   // const scrollHandler = (id) => {
@@ -385,32 +403,102 @@ const Room = () => {
     </div>
 
     {/* videoCall Section */}
-    {isCalling && (
-      <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
-        
-        <div className="flex gap-4">
-          <video
-            ref={myVideoRef}
-            autoPlay
-            muted
-            className="w-80 h-60 bg-gray-800 rounded"
-          />
+{/* videoCall Section */}
+{isCalling && (
+  <div className="fixed inset-0 bg-[#020617] flex flex-col z-50">
 
-          <video
-            ref={remoteVideoRef}
-            autoPlay
-            className="w-80 h-60 bg-gray-800 rounded"
-          />
-        </div>
+    {/* Top bar */}
+    <div className="flex items-center justify-between px-6 py-4 bg-[#0f172a] shadow-md">
+      <h2 className="text-white text-lg font-semibold">
+        Video Call
+      </h2>
 
-        <button
-          onClick={endCall}
-          className="mt-6 bg-red-600 px-6 py-2 rounded text-white"
-        >
-          End Call
-        </button>
+      <button
+        onClick={endCall}
+        className="bg-red-600 hover:bg-red-700 transition px-4 py-2 rounded-lg text-white text-sm"
+      >
+        End Call
+      </button>
+    </div>
+
+    {/* Video Grid */}
+    <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 justify-center items-center">
+
+      {/* Remote Video (Main) */}
+      <div className="relative w-full md:w-2/3 h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
+        <video
+          ref={remoteVideoRef}
+          autoPlay
+          className="w-full h-full object-cover"
+        />
+        <span className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded">
+          Remote User
+        </span>
       </div>
-    )}
+
+      {/* My Video (Floating on mobile, side on desktop) */}
+      <div className="relative w-40 h-32 md:w-1/3 md:h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
+        <video
+          ref={myVideoRef}
+          autoPlay
+          muted
+          className="w-full h-full object-cover"
+        />
+        <span className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-2 py-1 rounded">
+          You
+        </span>
+      </div>
+    </div>
+
+    {/* Controls */}
+    <div className="bg-[#0f172a] p-4 flex justify-center items-center gap-6">
+
+      {/* Mic */}
+      <button
+        onClick={micToggle}
+        className={`p-4 rounded-full transition ${
+          muteMic ? "bg-red-500" : "bg-gray-700 hover:bg-gray-600"
+        }`}
+      >
+        <img
+          className="w-6 h-6 invert"
+          src={
+            muteMic
+              ? "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064901/noMic_phbi3e.png"
+              : "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064900/mic_ywshsj.png"
+          }
+          alt=""
+        />
+      </button>
+
+      {/* Video */}
+      <button
+        onClick={videoToggle}
+        className={`p-4 rounded-full transition ${
+          muteVideo ? "bg-red-500" : "bg-gray-700 hover:bg-gray-600"
+        }`}
+      >
+        <img
+          className="w-6 h-6 invert"
+          src={
+            muteVideo
+              ? "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064881/noVideo_trqyhy.png"
+              : "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778063889/videoCall_pykb69.png"
+          }
+          alt=""
+        />
+      </button>
+
+      {/* End Call Big Button */}
+      <button
+        onClick={endCall}
+        className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full text-white font-semibold shadow-lg"
+      >
+        End
+      </button>
+    </div>
+  </div>
+)}
   </>
 )
 }

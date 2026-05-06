@@ -14,7 +14,7 @@ export function WsProvider ({children}){
             (ws.readyState === WebSocket.OPEN ||
             ws.readyState === WebSocket.CONNECTING)
             ) {
-            return; // already active or connecting ✅
+            return; // already active or connecting 
         }
 
         const socket = new WebSocket(import.meta.env.VITE_WS_URL)  //establish connectn

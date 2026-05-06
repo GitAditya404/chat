@@ -26,7 +26,7 @@ export const webSocket = (server) => {
                 allSocket[roomId].push(socket);
                 console.log('user joined ' + roomId)
                 socket.room = roomId  //attaching a room field in socket itself , so that later the room of the socket can be identified instantly
-                console.log(allSocket)
+                // console.log(allSocket)
             }
 
             if(parsedMsg.type === 'leave')
@@ -40,7 +40,7 @@ export const webSocket = (server) => {
                     delete allSocket[roomId]; 
                 }
                 console.log('user left ' + roomId)
-                console.log(allSocket)
+                // console.log(allSocket)
 
             }
 
@@ -119,7 +119,7 @@ export const webSocket = (server) => {
         socket.on('close',() => {
             // disconnect the websocket connection of socket from which close was initiated
           console.log("close running")
-            console.log(allSocket)
+            // console.log(allSocket)
         })
 
 })
