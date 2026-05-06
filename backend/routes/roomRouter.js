@@ -41,7 +41,7 @@ router.post('/join', isLoggedIn,async (req,res) => {  //route-> /room/join
       {new:true}
     )
     if(!room)
-      res.status(404).json({
+      return res.status(404).json({
         msg : "Room does not exist"
       })
 

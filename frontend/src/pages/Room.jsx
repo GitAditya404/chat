@@ -290,7 +290,7 @@ const Room = () => {
       {/* Header */}
       <div className="h-16  bg-[#1e293b] flex items-center px-6 shadow-md">
         <h1 className="text-white text-2xl font-semibold">{roomName}</h1>
-        <div className='ml-auto'>
+        <div className='ml-auto flex items-center gap-5'>
           <button onClick={startCall} className='mr-5'>
             <img className='size-8 invert brightness-200' src="/videoCall.png" alt="" />
           </button>
@@ -403,39 +403,20 @@ const Room = () => {
 
     </div>
 
-    {/* videoCall Section */}
 {/* videoCall Section */}
 {isCalling && (
   <div className="fixed inset-0 bg-[#020617] flex flex-col z-50">
 
     {/* Top bar */}
-    <div className="flex items-center justify-between px-6 py-4 bg-[#0f172a] shadow-md">
+    <div className="  px-6 py-4 bg-[#0f172a] shadow-md">
       <h2 className="text-white text-lg font-semibold">
         Video Call
       </h2>
 
-      <button
-        onClick={endCall}
-        className="bg-red-600 hover:bg-red-700 transition px-4 py-2 rounded-lg text-white text-sm"
-      >
-        End Call
-      </button>
     </div>
 
     {/* Video Grid */}
     <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 justify-center items-center">
-
-      {/* Remote Video (Main) */}
-      <div className="relative w-full md:w-2/3 h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
-        <video
-          ref={remoteVideoRef}
-          autoPlay
-          className="w-full h-full object-cover"
-        />
-        <span className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded">
-          Remote User
-        </span>
-      </div>
 
       {/* My Video (Floating on mobile, side on desktop) */}
       <div className="relative w-40 h-32 md:w-1/3 md:h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
@@ -449,6 +430,20 @@ const Room = () => {
           You
         </span>
       </div>
+
+      {/* Remote Video (Main) */}
+      <div className="relative border w-full md:w-1/3 h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
+        <video
+          ref={remoteVideoRef}
+          autoPlay
+          className="w-full h-full object-cover"
+        />
+        <span className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded">
+          Remote User
+        </span>
+      </div>
+
+
     </div>
 
     {/* Controls */}
@@ -490,7 +485,7 @@ const Room = () => {
         />
       </button>
 
-      {/* End Call Big Button */}
+      {/* End Call Button */}
       <button
         onClick={endCall}
         className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full text-white font-semibold shadow-lg"
