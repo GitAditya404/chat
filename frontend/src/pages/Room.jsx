@@ -21,6 +21,11 @@ const Room = () => {
   const peerRef = useRef(null)
   const [remotePeerId , setRemotePeerId] = useState(null)
 
+  const [isCalling, setIsCalling] = useState(false)
+  const myVideoRef = useRef(null)
+  const remoteVideoRef = useRef(null)
+  const streamRef = useRef(null)
+
   const roomName = rooms.find((room) => room._id.toString() === id)?.name
 
   useEffect(() => {
@@ -41,6 +46,18 @@ const Room = () => {
     })
 
     peerRef.current = peer ;
+
+    //listen for incoming call 
+    peer.on("call", (call) => {
+        call.answer(streamRef.current) // send my stream
+
+        call.on("stream", (remoteStream) => {
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = remoteStream
+          }
+        })
+    })
+
   },[])
 
   const fetchMsg = async () => {
@@ -199,6 +216,43 @@ const Room = () => {
       });
   }
 
+  async function startCall() {
+      setIsCalling(true)
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+      })
+
+      streamRef.current = stream
+
+      if (myVideoRef.current) {
+        myVideoRef.current.srcObject = stream
+      }
+
+      // If someone already exists → call them
+      if (remotePeerId) {
+        const call = peerRef.current.call(remotePeerId, stream)
+
+        call.on("stream", (remoteStream) => {
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = remoteStream
+          }
+        })
+      }
+  }
+
+  function endCall() {
+    setIsCalling(false)
+
+    streamRef.current?.getTracks().forEach(track => track.stop())
+
+    if (myVideoRef.current) 
+      myVideoRef.current.srcObject = null
+    if (remoteVideoRef.current)
+      remoteVideoRef.current.srcObject = null
+  }
+
   // const scrollHandler = (id) => {
   //   document.getElementById(id).scrollIntoView({
   //     behavior : 'smooth'
@@ -217,12 +271,18 @@ const Room = () => {
       {/* Header */}
       <div className="h-16  bg-[#1e293b] flex items-center px-6 shadow-md">
         <h1 className="text-white text-2xl font-semibold">{roomName}</h1>
-        {
-          isRoomCreator && <button onClick={deleteHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Delete Room</button>
-        }
-        {
-          !isRoomCreator && <button onClick={leaveHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Leave Room</button>
-        }
+        <div className='ml-auto'>
+          <button onClick={startCall} className='mr-5'>
+            <img className='size-8 invert brightness-200' src="/videoCall.png" alt="" />
+          </button>
+          {
+            isRoomCreator && <button onClick={deleteHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Delete Room</button>
+          }
+          {
+            !isRoomCreator && <button onClick={leaveHandler} className='ml-auto rounded bg-blue-600 text-white p-2 cursor-pointer'>Leave Room</button>
+          }
+        </div>
+
         
       </div>
 
@@ -323,6 +383,34 @@ const Room = () => {
       </div>
 
     </div>
+
+    {/* videoCall Section */}
+    {isCalling && (
+      <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+        
+        <div className="flex gap-4">
+          <video
+            ref={myVideoRef}
+            autoPlay
+            muted
+            className="w-80 h-60 bg-gray-800 rounded"
+          />
+
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            className="w-80 h-60 bg-gray-800 rounded"
+          />
+        </div>
+
+        <button
+          onClick={endCall}
+          className="mt-6 bg-red-600 px-6 py-2 rounded text-white"
+        >
+          End Call
+        </button>
+      </div>
+    )}
   </>
 )
 }
