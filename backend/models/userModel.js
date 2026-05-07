@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     profilePic : {
         type : String,
         default : 'defaultImg.jpg'
-    }       
+    },
+    googleAccessToken : String // used for calender API      
 })
 
 const user = mongoose.model('user',userSchema)
