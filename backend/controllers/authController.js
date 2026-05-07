@@ -2,6 +2,7 @@ import userModel from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import generateToken from '../utils/generateToken.js';
 import zod from 'zod'
+import axios from 'axios'
 
 export const registerUser = async  (req,res) => {
 
@@ -57,6 +58,49 @@ export const registerUser = async  (req,res) => {
     catch(e) {
         return res.status(400).json({
             msg : "Internal Server Error"
+        })
+    }
+}
+
+export const googleLoginUser = async (req,res) => {
+
+    try{
+        const {access_token} = req.body;
+
+        // get user info from google
+        const googleRes = await axios.get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            {
+                headers: {
+                    Authorization: `Bearer ${access_token}`
+                }
+            }
+        )
+
+        const {email,name} = googleRes.data
+
+        const user = await userModel.findOne({email : email})
+        if(!user) // if user not registered ,register it in case of google login
+            {
+                await userModel.create({
+                    fullname : name , 
+                    email : email,
+                })
+            }
+        const token  = generateToken(email)
+        res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "none"
+            })
+        console.log('token created')
+        return res.send('cookie Stored')
+        
+    }
+
+    catch(err){
+        return res.status(500).json({
+            msg : err
         })
     }
 }

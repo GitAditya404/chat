@@ -2,13 +2,14 @@ import express from 'express'
 const router = express.Router()
 import userModel from '../models/userModel.js'
 import isLoggedIn from '../middlewares/isLoggedIn.js'
-import {registerUser , loginUser , logout} from '../controllers/authController.js'
+import {registerUser , loginUser , googleLoginUser , logout} from '../controllers/authController.js'
 import upload from '../middlewares/multerConfig.js'
 import cloudinary from '../config/cloudinary.js'
 
 router.post('/signup',registerUser)   // route -> /user/signup
 router.post('/login',loginUser)
 router.post('/logout',logout)
+router.post('/google/login',googleLoginUser)
 
 router.get('/profile' , isLoggedIn , async (req,res) => {
     try{

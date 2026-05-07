@@ -10,10 +10,10 @@ import userRouter from './routes/userRouter.js'
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
-
+  
 app.use(cors({
-  origin: "https://chat-frontend-ivory-eta.vercel.app",
-  // origin : true,
+  // origin: "https://chat-frontend-ivory-eta.vercel.app",
+  origin : true,
   credentials: true
 }));
 
