@@ -139,7 +139,7 @@ return (
           {/* Top section */}
           <div className="flex flex-col items-center px-8 py-10 bg-linear-to-b from-blue-50 to-white border-b">
             <img
-              src = {data?.profilePic || "defaultImg.jpg"}
+              src = {data?.profilePic || "/defaultImg.jpg"}
               alt=""
               className="w-36 h-36 rounded-full border-4 border-white shadow-lg object-cover"
             />
