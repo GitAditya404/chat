@@ -4,15 +4,17 @@ import App from './App.jsx'
 import {BrowserRouter} from 'react-router-dom'
 import { RoomsProvider } from '../context/RoomContext.jsx'
 import { WsProvider } from '../context/WebSocketContext.jsx'
+import {GoogleOAuthProvider} from '@react-oauth/google'
 
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
-        <WsProvider>
-            <RoomsProvider>
-                <App />
-            </RoomsProvider>
-        </WsProvider>
-
+        <GoogleOAuthProvider clientId={`${import.meta.env.VITE_GOOGLE_CLIENT_ID}`}>
+                <WsProvider>
+                    <RoomsProvider>
+                        <App />
+                    </RoomsProvider>
+                </WsProvider>
+        </GoogleOAuthProvider>
     </BrowserRouter>
 
 )
