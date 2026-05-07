@@ -10,6 +10,15 @@ const Login = () => {
     const [errorMsg, setErrorMsg] = useState("")
     
     const googleLoginHandler = useGoogleLogin({
+
+            //ask access for google calender also
+            scope: `
+                openid
+                profile
+                email
+                https://www.googleapis.com/auth/calendar
+            `,
+
         onSuccess : async (tokenResponse) => {
             await axios.post(`${import.meta.env.VITE_API_URL}/user/google/login`,
                 {
