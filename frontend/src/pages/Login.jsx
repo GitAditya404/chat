@@ -12,13 +12,13 @@ const Login = () => {
     const googleLoginHandler = useGoogleLogin({
 
             //ask access for google calender also
-            scope: `
-                openid
-                profile
-                email
-                https://www.googleapis.com/auth/calendar
-            `,
-
+        scope: [
+            "openid",
+            "profile",
+            "email",
+            "https://www.googleapis.com/auth/calendar"
+        ].join(" "),
+        
         onSuccess : async (tokenResponse) => {
             await axios.post(`${import.meta.env.VITE_API_URL}/user/google/login`,
                 {

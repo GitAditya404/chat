@@ -7,6 +7,10 @@ const Home = () => {
   const joinRef = useRef(null)
   const createRef = useRef(null)
   const [responseMsg , setResponseMsg] = useState("")
+  const [title ,setTitle] = useState("")
+  const [startTime ,setStartTime] = useState("")
+  const [endTime ,setEndTime] = useState("")
+  const [emails , setEmails] = useState([])
 
   const {fetchData} = useContext(RoomContext)
 
@@ -67,6 +71,38 @@ const Home = () => {
 
       setTimeout(() => {
           console.log("ran")
+          setResponseMsg("")
+      }, 4000);
+    }
+
+  }
+
+  async function meetingScheduler(){
+    try{
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/createMeeting`,
+      {
+        title : title,
+        startTime,
+        endTime,
+        emails : emails.split(",").map(email => email.trim())
+
+      },
+      {withCredentials : true}
+    )
+
+    
+      if(response.data.msg)
+      {
+        setResponseMsg(response.data.msg)
+        setTimeout(() => {
+          setResponseMsg("")
+        }, 4000);
+      }
+    }
+    catch(err){
+      setResponseMsg(err.response.data.msg)
+
+      setTimeout(() => {
           setResponseMsg("")
       }, 4000);
     }
@@ -142,6 +178,57 @@ const Home = () => {
               className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
             >
               Create Now!
+            </button>
+          </div>
+
+          {/* Create metting Card */}
+          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
+
+            <span className="absolute top-3 left-4 text-2xl">✦</span>
+            <span className="absolute top-3 right-4 text-2xl">✦</span>
+
+            <h1 className="text-3xl font-extrabold text-center tracking-wide">
+              Schedule Meeting
+            </h1>
+
+            <p className="text-center text-lg font-semibold mt-2">
+              Schedule with Google Calendar
+            </p>
+
+            <input
+              onChange={(e) => setTitle(e.target.value)}
+              type="text"
+              placeholder="title"
+              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
+            />
+
+                        <input
+              onChange={(e) => setStartTime(e.target.value)}
+             
+              type= 'datetime-local'
+              placeholder="start time"
+              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
+            />
+
+                        <input
+              onChange={(e) => setEndTime(e.target.value)}
+              type="datetime-local"
+              placeholder="end time"
+              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
+            />
+
+                        <input
+              onChange={(e) => setEmails(e.target.value)}
+              type="email"
+              placeholder="emails"
+              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
+            />
+
+            <button
+              onClick={meetingScheduler}
+              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+            >
+              Submit
             </button>
           </div>
 
