@@ -79,16 +79,21 @@ export const googleLoginUser = async (req,res) => {
 
         const {email,name} = googleRes.data
 
-        const user = await userModel.updateOne({email : email} , {googleAccessToken : access_token })
-        
-        if(!user) // if user not registered ,register it in case of google login
-            {
-                await userModel.create({
-                    fullname : name , 
-                    email : email,
-                    googleAccessToken : access_token
-                })
-            }
+        const user = await userModel.findOne({email : email})
+
+        if(!user)
+        {
+            await userModel.create({
+                fullname : name,
+                email : email,
+                googleAccessToken : access_token
+            })
+        }
+        else
+        {
+            user.googleAccessToken = access_token
+            await user.save()
+        }
         
 
         const token  = generateToken(email)
