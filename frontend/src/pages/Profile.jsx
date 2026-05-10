@@ -114,7 +114,7 @@ const Profile = () => {
   }
 
 return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-[#0f172a]">
 
       {/* Top Abstract Banner */}
       <div
@@ -131,13 +131,13 @@ return (
       </div>
 
       {/* Main Card */}
-      <div className="max-w-6xl mx-auto relative -mt-28  flex gap-8 px-6">
+      <div className="max-w-6xl  mx-auto relative -mt-28   flex gap-8 px-6">
 
         {/* Left Profile Card */}
-      <div className="w-1/3 bg-white rounded-3xl shadow-xl overflow-hidden h-fit">
+      <div className="w-1/3 bg-[#40407a] rounded-3xl shadow-xl overflow-hidden h-fit">
 
           {/* Top section */}
-          <div className="flex flex-col items-center px-8 py-10 bg-linear-to-b from-blue-50 to-white border-b">
+          <div className="flex flex-col items-center px-8 py-10 ">
             <img
               src = {data?.profilePic || "/defaultImg.jpg"}
               alt=""
@@ -146,14 +146,14 @@ return (
             <input 
               onChange={imgUploadHandler}
               type="file" 
-              className="mt-2 ml-16 text-sm text-gray-700 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="mt-2 ml-16 text-sm text-white file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
             />
 
-            <h2 className="mt-5 text-3xl font-bold text-gray-800 text-center">
+            <h2 className="mt-5 text-3xl font-bold text-white text-center">
               {data?.fullname || ""}
             </h2>
 
-            <p className="text-gray-500 text-sm mt-1 break-all text-center">
+            <p className="text-white text-sm mt-1 break-all text-center">
               {data?.email || ""}
             </p>
           </div>
@@ -183,15 +183,15 @@ return (
       </div>
 
         {/* Right Info Section */}
-        <div className="w-2/3 bg-white rounded-2xl shadow-lg p-10">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">
+        <div className="w-2/3 bg-[#40407a] rounded-2xl shadow-lg p-10">
+          <h1 className="text-3xl font-bold  mb-8">
             Profile Information
           </h1>
 
           <div className="grid grid-cols-2 gap-6">
 
             <div>
-              <label className="text-gray-500 text-sm">Full Name</label>
+              <label className="text-white text-sm">Full Name</label>
               <input
                 type="text"
                 value={data?.fullname || ""}
@@ -201,17 +201,17 @@ return (
             </div>
 
             <div>
-              <label className="text-gray-500 text-sm">Email</label>
+              <label className="text-white text-sm">Email</label>
               <input
                 type="text"
                 value={data?.email || ""}
                 readOnly
-                className="w-full mt-2 border rounded-lg px-4 py-3 outline-none bg-[#d4e9e3]"
+                className="w-full mt-2 border rounded-lg px-4 py-3 outline-none bg-[#aaa69d]"
               />
             </div>
 
             <div>
-              <label className="text-gray-500 text-sm">Phone Number</label>
+              <label className="text-white text-sm">Phone Number</label>
               <input
                 type="text"
                 value= {data?.phoneNo  || ""}
@@ -222,7 +222,7 @@ return (
             </div>
 
             <div>
-              <label className="text-gray-500 text-sm">About</label>
+              <label className="text-white text-sm">About</label>
               <input  
                 type="text"
                 value={data?.about || ""}
