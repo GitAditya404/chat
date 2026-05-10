@@ -11,6 +11,7 @@ const Home = () => {
   const [startTime ,setStartTime] = useState("")
   const [endTime ,setEndTime] = useState("")
   const [emails , setEmails] = useState([])
+  const [showMeetingModal, setShowMeetingModal] = useState(false)
 
   const {fetchData} = useContext(RoomContext)
 
@@ -180,57 +181,110 @@ const Home = () => {
               Create Now!
             </button>
           </div>
+          
 
           {/* Create metting Card */}
-          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
+          <div className="relative bg-[#F5B246] text-black rounded-2xl border-[5px] border-black shadow-[8px_8px_0px_#111] p-6">
 
-            <span className="absolute top-3 left-4 text-2xl">✦</span>
-            <span className="absolute top-3 right-4 text-2xl">✦</span>
-
-            <h1 className="text-3xl font-extrabold text-center tracking-wide">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-center">
               Schedule Meeting
             </h1>
 
-            <p className="text-center text-lg font-semibold mt-2">
+            <p className="text-center mt-3 font-semibold">
               Schedule with Google Calendar
             </p>
 
-            <input
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              placeholder="title"
-              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
-            />
-
-                        <input
-              onChange={(e) => setStartTime(e.target.value)}
-             
-              type= 'datetime-local'
-              placeholder="start time"
-              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
-            />
-
-                        <input
-              onChange={(e) => setEndTime(e.target.value)}
-              type="datetime-local"
-              placeholder="end time"
-              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
-            />
-
-                        <input
-              onChange={(e) => setEmails(e.target.value)}
-              type="email"
-              placeholder="emails"
-              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
-            />
-
             <button
-              onClick={meetingScheduler}
-              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
+              onClick={() => setShowMeetingModal(true)}
+              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 rounded-xl shadow-[4px_4px_0px_#111] hover:translate-y-0.5 hover:shadow-none transition-all"
             >
-              Submit
+              Schedule
             </button>
           </div>
+
+          { showMeetingModal && (
+
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+
+              <div className="w-full max-w-xl bg-[#1E1B2E] text-white rounded-3xl border border-white/10 shadow-2xl p-6 relative animate-[fadeIn_.2s_ease]">
+
+                {/* Close Button */}
+                <button
+                  onClick={() => setShowMeetingModal(false)}
+                  className="absolute top-4 right-4 text-2xl text-gray-400 hover:text-white"
+                >
+                  ✕
+                </button>
+
+                <h1 className="text-3xl font-bold mb-2">
+                  Schedule Meeting
+                </h1>
+
+                <p className="text-gray-400 mb-8">
+                  Schedule with Google Calendar
+                </p>
+
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm text-gray-300">
+                    Meeting Title
+                  </label>
+
+                  <input
+                    onChange={(e) => setTitle(e.target.value)}
+                    type="text"
+                    placeholder="Team Discussion"
+                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                  />
+                </div>
+
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm text-gray-300">
+                    Start Time
+                  </label>
+
+                  <input
+                    onChange={(e) => setStartTime(e.target.value)}
+                    type="datetime-local"
+                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                  />
+                </div>
+
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm text-gray-300">
+                    End Time
+                  </label>
+
+                  <input
+                    onChange={(e) => setEndTime(e.target.value)}
+                    type="datetime-local"
+                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                  />
+                </div>
+
+                <div className="mb-7">
+                  <label className="block mb-2 text-sm text-gray-300">
+                    Recipient Emails
+                  </label>
+
+                  <input
+                    onChange={(e) => setEmails(e.target.value)}
+                    type="text"
+                    placeholder="abc@gmail.com, xyz@gmail.com"
+                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                  />
+                </div>
+
+                <button
+                  onClick={meetingScheduler}
+                  className="w-full py-3 rounded-xl bg-[#7B61FF] hover:bg-[#6b50ff] transition-all text-lg font-semibold"
+                >
+                  Schedule Meeting
+                </button>
+
+              </div>
+            </div>
+          )
+        }
 
         </div>
       </div>
