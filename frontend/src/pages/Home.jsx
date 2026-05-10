@@ -1,6 +1,5 @@
-import React, { useState ,useContext, useRef, useEffect } from 'react'
+import React, { useState ,useContext, useRef } from 'react'
 import axios from 'axios'
-import Sidebar from '../../components/Sidebar.jsx'
 import { RoomContext } from '../../context/RoomContext.jsx'
 
 const Home = () => {
@@ -10,7 +9,9 @@ const Home = () => {
   const [title ,setTitle] = useState("")
   const [startTime ,setStartTime] = useState("")
   const [endTime ,setEndTime] = useState("")
-  const [emails , setEmails] = useState([])
+  const [emails , setEmails] = useState("")
+  const [showJoinModal, setShowJoinModal] = useState(false)
+  const [showCreateModal, setShowCreateModal] = useState(false)
   const [showMeetingModal, setShowMeetingModal] = useState(false)
 
   const {fetchData} = useContext(RoomContext)
@@ -110,113 +111,260 @@ const Home = () => {
 
   }
 
-  return (
+return (
   <>
-    <div className="OUTER justify-center flex  min-h-screen text-white bg-[linear-gradient(to_right,#00000020_1px,transparent_1px),linear-gradient(to_bottom,#00000020_1px,transparent_1px)] bg-size-[80px_80px] bg-[#b8f1cb]">
+    <div className="OUTER justify-center flex min-h-screen text-white bg-[#0f172a]">
 
-      <div className="RIGHT  w-2/3 flex justify-center items-start overflow-y-auto">
-        <div className="relative w-full max-w-4xl mt-10 space-y-12">
+      <div className="RIGHT  w-full lg:w-2/3 flex justify-center items-start overflow-y-auto px-4">
+        
+        <div className="relative w-full max-w-5xl mt-10 pb-10">
 
           {/* Response Message */}
           {responseMsg && (
-            <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[80%] bg-[#D88AD8] text-black rounded-md border-4 border-black shadow-[6px_6px_0px_#111] px-6 py-4">
-              <p className="text-center text-xl font-bold">{responseMsg}</p>
+            <div className="fixed top-6 left-1/2 -translate-x-1/2 z-100 w-[90%] md:w-125 bg-[#D88AD8] text-black rounded-2xl border-4 border-black shadow-[6px_6px_0px_#111] px-6 py-4">
+              <p className="text-center text-lg md:text-xl font-bold">
+                {responseMsg}
+              </p>
             </div>
           )}
 
-          {/* Join Room Card */}
-          <div className=" relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
+          {/* TOP GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-7">
 
-            <span className="absolute top-3 left-4 text-2xl">✦</span>
-            <span className="absolute top-3 right-4 text-2xl">✦</span>
+            {/* JOIN ROOM CARD */}
+          <div className="relative rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 p-8 shadow-2xl">
 
-            <h1 className="text-3xl font-extrabold text-center tracking-wide">
-              JOIN ROOM!
-            </h1>
+            {/* Top */}
+            <div className="flex items-center gap-4 mb-10">
 
-            <p className="text-center text-lg font-semibold mt-2">
-              Enter room name 😄
+              <img
+                 src="https://cdn-icons-png.flaticon.com/512/9068/9068671.png"
+                alt="video icon"
+                className="w-14 h-14 object-contain"
+              />
+
+              <h1 className="text-3xl font-semibold text-white">
+                Join Room
+              </h1>
+
+            </div>
+
+            {/* Text */}
+            <p className="text-gray-300 text-lg mb-8">
+              Join room by roomID
             </p>
 
-            <input
-              ref={joinRef}
-              type="text"
-              placeholder="Room Name"
-              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
-            />
+            {/* Divider */}
+            <div className="border-t border-white/10 mb-6"></div>
 
-            <button
-              onClick={joinClick}
-              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
-            >
-              Let’s Go!
-            </button>
+            {/* Button */}
+            <div className="flex justify-end">
+
+              <button
+                onClick={() => setShowJoinModal(true)}
+                className="px-10 py-3 rounded-full bg-blue-500 hover:bg-blue-600 transition-all duration-300 text-white font-semibold shadow-lg cursor-pointer"
+              >
+                Join
+              </button>
+
+            </div>
+
           </div>
 
-          {/* Create Room Card */}
-          <div className="relative bg-[#F5B246] text-black rounded-md border-[6px] border-black shadow-[8px_8px_0px_#111] p-6">
+            {/* CREATE ROOM CARD */}
+          <div className="relative rounded-3xl bg-white/10 backdrop-blur-xl border border-white/10 p-8 shadow-2xl">
 
-            <span className="absolute top-3 left-4 text-2xl">✦</span>
-            <span className="absolute top-3 right-4 text-2xl">✦</span>
+            {/* Top */}
+            <div className="flex items-center gap-4 mb-10">
 
-            <h1 className="text-3xl font-extrabold text-center tracking-wide">
-              CREATE ROOM!
-            </h1>
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3659/3659899.png"
+                alt="video icon"
+                className="w-14 h-14 object-contain"
+              />
 
-            <p className="text-center text-lg font-semibold mt-2">
-              Make your own space 🚀
+              <h1 className="text-3xl font-semibold text-white">
+                Create Room
+              </h1>
+
+            </div>
+
+            {/* Text */}
+            <p className="text-gray-300 text-lg mb-8">
+              Create your own space
             </p>
 
-            <input
-              ref={createRef}
-              type="text"
-              placeholder="Room Name"
-              className="mt-6 w-full px-4 py-3 rounded-md border-4 border-black bg-white text-black outline-none text-base font-medium"
-            />
+            {/* Divider */}
+            <div className="border-t border-white/10 mb-6"></div>
 
-            <button
-              onClick={createClick}
-              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 shadow-[4px_4px_0px_#111] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
-            >
-              Create Now!
-            </button>
+            {/* Button */}
+            <div className="flex justify-end">
+
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="px-10 py-3 rounded-full bg-blue-500 hover:bg-blue-600 transition-all duration-300 text-white font-semibold shadow-lg cursor-pointer"
+              >
+                Create
+              </button>
+
+            </div>
+
           </div>
-          
+          </div>
 
-          {/* Create metting Card */}
-          <div className="relative bg-[#F5B246] text-black rounded-2xl border-[5px] border-black shadow-[8px_8px_0px_#111] p-6">
+          {/* SCHEDULE Meeting CARD */}
+          <div className="relative rounded-3xl mt-8 bg-white/10 backdrop-blur-xl border border-white/10 p-8 shadow-2xl">
 
-            <h1 className="text-2xl md:text-3xl font-extrabold text-center">
-              Schedule Meeting
-            </h1>
+            {/* Top */}
+            <div className="flex items-center gap-4 mb-10">
 
-            <p className="text-center mt-3 font-semibold">
-              Schedule with Google Calendar
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/747/747310.png"
+                alt="calendar icon"
+                className="w-14 h-14 object-contain"
+              />
+
+              <h1 className="text-3xl font-semibold text-white">
+                Schedule Meeting
+              </h1>
+
+            </div>
+
+            {/* Text */}
+            <p className="text-gray-300 text-lg mb-8">
+              Schedule meetings with Google Calendar
             </p>
 
-            <button
+            {/* Divider */}
+            <div className="border-t border-white/10 mb-6"></div>
+
+            {/* Button */}
+            <div className="flex justify-end">
+
+              <button
               onClick={() => setShowMeetingModal(true)}
-              className="mt-6 w-full bg-[#D88AD8] border-4 border-black text-black text-lg font-bold py-3 rounded-xl shadow-[4px_4px_0px_#111] hover:translate-y-0.5 hover:shadow-none transition-all"
-            >
-              Schedule
-            </button>
+                className="px-10 py-3 rounded-full bg-purple-500 hover:bg-purple-600 transition-all duration-300 text-white font-semibold shadow-lg cursor-pointer"
+              >
+                Schedule
+              </button>
+
+            </div>
+
           </div>
 
-          { showMeetingModal && (
+          {/* JOIN ROOM MODAL */}
+          {showJoinModal && (
 
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
 
-              <div className="w-full max-w-xl bg-[#1E1B2E] text-white rounded-3xl border border-white/10 shadow-2xl p-6 relative animate-[fadeIn_.2s_ease]">
+              <div className="relative w-full max-w-md bg-[#1E1B2E] text-white rounded-3xl border border-white/10 shadow-2xl p-6">
 
-                {/* Close Button */}
                 <button
-                  onClick={() => setShowMeetingModal(false)}
-                  className="absolute top-4 right-4 text-2xl text-gray-400 hover:text-white"
+                  onClick={() => setShowJoinModal(false)}
+                  className="absolute top-4 right-4 text-3xl text-gray-400 hover:text-white transition-all cursor-pointer"
                 >
-                  ✕
+                  ×
                 </button>
 
-                <h1 className="text-3xl font-bold mb-2">
+                <h1 className="text-4xl font-bold mb-2">
+                  Join Room
+                </h1>
+
+                <p className="text-gray-400 mb-8">
+                  Enter the room ID to join
+                </p>
+
+                <div className="mb-7">
+
+                  <label className="block mb-2 text-sm text-gray-300">
+                    Room ID
+                  </label>
+
+                  <input
+                    ref={joinRef}
+                    type="text"
+                    placeholder="Enter room ID"
+                    className="w-full px-4 py-4 rounded-2xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                  />
+
+                </div>
+
+                <button
+                  onClick={joinClick}
+                  className="w-full py-4 rounded-2xl bg-[#7B61FF] hover:bg-[#6b50ff] transition-all text-lg font-semibold cursor-pointer"
+                >
+                  Join Room
+                </button>
+
+              </div>
+
+            </div>
+          )}
+
+          {/* CREATE ROOM MODAL */}
+          {showCreateModal && (
+
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+
+              <div className="relative w-full max-w-md bg-[#1E1B2E] text-white rounded-3xl border border-white/10 shadow-2xl p-6">
+
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="absolute top-4 right-4 text-3xl text-gray-400 hover:text-white transition-all cursor-pointer"
+                >
+                  ×
+                </button>
+
+                <h1 className="text-4xl font-bold mb-2">
+                  Create Room
+                </h1>
+
+                <p className="text-gray-400 mb-8">
+                  Create your own room
+                </p>
+
+                <div className="mb-7">
+
+                  <label className="block mb-2 text-sm text-gray-300">
+                    Room Name
+                  </label>
+
+                  <input
+                    ref={createRef}
+                    type="text"
+                    placeholder="Enter room name"
+                    className="w-full px-4 py-4 rounded-2xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                  />
+
+                </div>
+
+                <button
+                  onClick={createClick}
+                  className="w-full py-4 rounded-2xl bg-[#7B61FF] hover:bg-[#6b50ff] transition-all text-lg font-semibold cursor-pointer"
+                >
+                  Create Room
+                </button>
+
+              </div>
+
+            </div>
+          )}
+
+          {/* MEETING MODAL */}
+          {showMeetingModal && (
+
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+
+              <div className="relative w-full max-w-xl bg-[#1E1B2E] text-white rounded-3xl border border-white/10 shadow-2xl p-6">
+
+                <button
+                  onClick={() => setShowMeetingModal(false)}
+                  className="absolute top-4 right-4 text-3xl text-gray-400 hover:text-white transition-all cursor-pointer"
+                >
+                  ×
+                </button>
+
+                <h1 className="text-4xl font-bold mb-2">
                   Schedule Meeting
                 </h1>
 
@@ -233,7 +381,7 @@ const Home = () => {
                     onChange={(e) => setTitle(e.target.value)}
                     type="text"
                     placeholder="Team Discussion"
-                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                    className="w-full px-4 py-4 rounded-2xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
                   />
                 </div>
 
@@ -245,7 +393,7 @@ const Home = () => {
                   <input
                     onChange={(e) => setStartTime(e.target.value)}
                     type="datetime-local"
-                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                    className="w-full px-4 py-4 rounded-2xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
                   />
                 </div>
 
@@ -257,7 +405,7 @@ const Home = () => {
                   <input
                     onChange={(e) => setEndTime(e.target.value)}
                     type="datetime-local"
-                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                    className="w-full px-4 py-4 rounded-2xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
                   />
                 </div>
 
@@ -270,21 +418,21 @@ const Home = () => {
                     onChange={(e) => setEmails(e.target.value)}
                     type="text"
                     placeholder="abc@gmail.com, xyz@gmail.com"
-                    className="w-full px-4 py-3 rounded-xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
+                    className="w-full px-4 py-4 rounded-2xl bg-[#2B2740] border border-[#3C3657] outline-none focus:border-[#7B61FF]"
                   />
                 </div>
 
                 <button
                   onClick={meetingScheduler}
-                  className="w-full py-3 rounded-xl bg-[#7B61FF] hover:bg-[#6b50ff] transition-all text-lg font-semibold"
+                  className="w-full py-4 rounded-2xl bg-[#7B61FF] hover:bg-[#6b50ff] transition-all text-lg font-semibold cursor-pointer"
                 >
                   Schedule Meeting
                 </button>
 
               </div>
+
             </div>
-          )
-        }
+          )}
 
         </div>
       </div>
