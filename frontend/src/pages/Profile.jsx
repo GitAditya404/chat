@@ -131,10 +131,10 @@ return (
       </div>
 
       {/* Main Card */}
-      <div className="max-w-6xl  mx-auto relative -mt-28   flex gap-8 px-6">
+      <div className="max-w-6xl  mx-auto relative -mt-28 md:flex gap-8 px-6">
 
         {/* Left Profile Card */}
-      <div className="w-1/3 bg-[#40407a] rounded-3xl shadow-xl overflow-hidden h-fit">
+      <div className=" md:w-1/3 bg-[#40407a] rounded-3xl shadow-xl overflow-hidden h-fit">
 
           {/* Top section */}
           <div className="flex flex-col items-center px-8 py-10 ">
@@ -183,7 +183,7 @@ return (
       </div>
 
         {/* Right Info Section */}
-        <div className="w-2/3 bg-[#40407a] rounded-2xl shadow-lg p-10">
+        <div className="mt-8 md:mt-0 md:w-2/3 bg-[#40407a] rounded-2xl shadow-lg p-10">
           <h1 className="text-3xl font-bold  mb-8">
             Profile Information
           </h1>
