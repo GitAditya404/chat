@@ -55,7 +55,7 @@ const Login = () => {
 
     return <>
          <div className="w-full flex h-screen bg-[#2C2638] gap-5  text-white p-5">
-            <div className="w-2/5  ml-[7vw] mt-[12vh]">
+            <div className="w-full md:w-2/5  ml-[7vw] mt-[12vh]">
                 <h3 className="text-3xl text-semibold ">Hello,</h3>
                 <h3 className="text-3xl text-semibold mb-5">Welcome Back</h3>
                 <button className="w-3/5 flex items-center justify-center gap-3 bg-white text-gray-700 py-3 rounded-lg border border-gray-300 shadow-sm hover:shadow-md hover:bg-gray-50 transition-all duration-200 cursor-pointer"
@@ -96,7 +96,7 @@ const Login = () => {
                 </div>
             </div>
 
-            <div className="w-1/2 h-full  rounded-xl overflow-hidden">
+            <div className="hidden border md:block w-1/2 h-full  rounded-xl overflow-hidden">
                 <img className="h-full w-full object-cover  " src="/loginimg.png" alt="" />
             </div>
 
