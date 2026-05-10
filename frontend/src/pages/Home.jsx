@@ -113,11 +113,13 @@ const Home = () => {
 
 return (
   <>
-    <div className="OUTER justify-center flex min-h-screen text-white bg-[#0f172a]">
+    <div className="OUTER justify-center bg-cover flex h-screen text-white bg-[#0f172a]"
+     style={{ backgroundImage: "url('/11.png')" }}
+     >
 
-      <div className="RIGHT  w-full lg:w-2/3 flex justify-center items-start overflow-y-auto px-4">
+      <div className="RIGHT relative  w-full lg:w-2/3 flex justify-center items-start overflow-y-auto px-4">
         
-        <div className="relative w-full max-w-5xl mt-10 pb-10">
+        <div className=" w-full max-w-5xl mt-10 pb-10">
 
           {/* Response Message */}
           {responseMsg && (
@@ -138,9 +140,9 @@ return (
             <div className="flex items-center gap-4 mb-10">
 
               <img
-                 src="https://cdn-icons-png.flaticon.com/512/9068/9068671.png"
+                 src="https://res.cloudinary.com/dwrbwds1e/image/upload/v1778415853/meeting_wfdrnz.png"
                 alt="video icon"
-                className="w-14 h-14 object-contain"
+                className="w-14 h-14 object-contain invert brightness-200"
               />
 
               <h1 className="text-3xl font-semibold text-white">
@@ -221,7 +223,7 @@ return (
               <img
                 src="https://cdn-icons-png.flaticon.com/512/747/747310.png"
                 alt="calendar icon"
-                className="w-14 h-14 object-contain"
+                className="w-14 h-14 object-contain invert brightness-200"
               />
 
               <h1 className="text-3xl font-semibold text-white">

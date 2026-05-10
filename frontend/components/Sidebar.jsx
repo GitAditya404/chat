@@ -20,7 +20,10 @@ const Sidebar = ({rooms}) => {
 
 
       return (
-    <div className="SIDEBAR flex shrink-0 flex-col bg-[#2c3e50] w-full sm:w-[40vw] lg:w-[30vw] h-screen px-3 sm:px-5 py-4 sm:py-5 border-r border-[#2c2d2d] shadow-xl">
+    <div className="SIDEBAR flex shrink-0 flex-col bg-[#2c3e50] w-full sm:w-[40vw] lg:w-[30vw] h-screen px-3 sm:px-5 py-4 sm:py-5 border-r border-[#2c2d2d] shadow-xl"
+    
+     style={{ backgroundImage: "url('/9.jpg')" }}
+    >
 
       {/* Header */}
       <div className="flex items-center justify-between">
