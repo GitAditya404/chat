@@ -22,6 +22,11 @@ export const webSocket = (server) => {
                 if(!allSocket[roomId]){  // if room not present in allSocket ,create it
                     allSocket[roomId] = [];
                 }
+                
+                // Clean up any dead sockets before adding new one
+                // only keeps sockets which are alive(where readyState)=== 1
+                allSocket[roomId] = allSocket[roomId].filter(s => s.readyState === WebSocket.OPEN)
+                    
 
                 allSocket[roomId].push(socket);
                 console.log('user joined ' + roomId)
@@ -128,7 +133,7 @@ export const webSocket = (server) => {
 
         socket.on('close',(code , reason) => {
             // disconnect the websocket connection of socket from which close was initiated
-            
+
             console.log("close running — code:", code, "reason:", reason.toString(), "room:", socket.room)
             const roomId = socket.room;
 
