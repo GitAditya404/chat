@@ -35,10 +35,10 @@ const Signup = () => {
     return <>
         <div className="w-full flex h-screen bg-[#2C2638] gap-5  text-white p-5">
 
-            <div className="w-1/2 h-full  rounded-xl overflow-hidden">
+            <div className="hidden md:block w-1/2 h-full  rounded-xl overflow-hidden">
                 <img className="h-full w-full object-cover  " src="/mountain.jpg" alt="" />
             </div>
-            <div className="w-2/5   ml-[7vw] mt-[15vh]">
+            <div className="w-full md:w-2/5   ml-[7vw] mt-[15vh]">
 
                 <h3 className="text-4xl text-semibold ">Create an account</h3>
                 {errorMsg && (

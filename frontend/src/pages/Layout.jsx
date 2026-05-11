@@ -14,10 +14,10 @@ const Layout = () => {
     return (
         <div className='flex w-full h-screen bg-black text-white'>
         
-        {/* LEFT SIDE ALWAYS VISIBLE */}
-        <Sidebar rooms={rooms} />
+            {/* LEFT SIDE ALWAYS VISIBLE*/}
+            <Sidebar rooms={rooms} />
 
-        {/* RIGHT SIDE CHANGES */}
+        {/* RIGHT SIDE CHANGES*/}
         <div className='flex-1 border-l border-[#2c2d2d]'>
             <Outlet />
         </div>

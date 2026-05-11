@@ -32,9 +32,11 @@ export const webSocket = (server) => {
             if(parsedMsg.type === 'leave')
             {
                 const roomId = socket.room
-                if(allSocket[roomId]){
-                    allSocket[roomId] = allSocket[roomId].filter(x => x !== socket)
-                }
+                
+                if(!allSocket[roomId]) return; // if room already deleted from room router delete endpoint  
+
+                allSocket[roomId] = allSocket[roomId].filter(x => x !== socket)
+               
 
                 if (allSocket[roomId].length === 0) { // if no one in room then delete the room also
                     delete allSocket[roomId]; 
@@ -86,6 +88,7 @@ export const webSocket = (server) => {
                 socket.peerId = parsedMsg.payload.peerId
 
                 const roomId = socket.room;
+                console.log("logging all socket from peeriID condition",allSocket)
 
                     //  SAFETY CHECK
                 if (!roomId || !allSocket[roomId]) {
