@@ -88,7 +88,6 @@ export const webSocket = (server) => {
                 socket.peerId = parsedMsg.payload.peerId
 
                 const roomId = socket.room;
-                console.log("logging all socket from peeriID condition",allSocket)
 
                     //  SAFETY CHECK
                 if (!roomId || !allSocket[roomId]) {
@@ -127,9 +126,10 @@ export const webSocket = (server) => {
 
         })
 
-        socket.on('close',() => {
+        socket.on('close',(code , reason) => {
             // disconnect the websocket connection of socket from which close was initiated
-            console.log("close running")
+            
+            console.log("close running — code:", code, "reason:", reason.toString(), "room:", socket.room)
             const roomId = socket.room;
 
             if (!roomId || !allSocket[roomId]) return;
@@ -144,6 +144,10 @@ export const webSocket = (server) => {
                 delete allSocket[roomId];
             }
             console.log(allSocket)
+        })
+
+        socket.on('error', (err) => {
+          console.log("socket error:", err.message, "room:", socket.room)
         })
 
 })
