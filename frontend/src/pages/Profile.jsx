@@ -114,12 +114,12 @@ const Profile = () => {
   }
 
 return (
-    <div className="min-h-screen bg-[#0f172a]">
+    <div className="min-h-screen  bg-[#0f172a]">
 
       {/* Top Abstract Banner */}
       <div
-        className="h-60 bg-cover bg-center "
-        style={{ backgroundImage: "url('/abstract_background.jpg')" }}
+        className="h-screen bg-cover bg-center "
+        style={{ backgroundImage: "url('https://res.cloudinary.com/dwrbwds1e/image/upload/v1778604085/doodle_yjlafr.png')" }}
       >
         {responseMsg && (
           <div className="absolute top-6 left-1/2 -translate-x-1/2 w-[80%] max-w-sm">
@@ -131,7 +131,7 @@ return (
       </div>
 
       {/* Main Card */}
-      <div className="max-w-6xl  mx-auto relative -mt-28 md:flex gap-8 px-6">
+      <div className="max-w-6xl   mx-auto relative -mt-160 md:flex gap-8 px-6">
 
         {/* Left Profile Card */}
       <div className=" md:w-1/3 bg-[#40407a] rounded-3xl shadow-xl overflow-hidden h-fit">
@@ -235,10 +235,14 @@ return (
           </div>
 
           <div className='flex '>
-          <button onClick={saveHandler} className="mt-8 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md">
-            Save
+          <button onClick={saveHandler} className="mt-8 flex bg-blue-600 cursor-pointer hover:bg-blue-700 text-white justify-center items-center px-8 py-3 rounded-lg shadow-md">
+            <img src="https://res.cloudinary.com/dwrbwds1e/image/upload/v1778601831/diskette_nsihve.png" className='size-5 invert brightness-200' alt="" />
+            <span className='text-lg ml-2'>Save</span>
           </button>
-          <button onClick={logOut} className='ml-auto mt-8 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md'>Log Out</button>
+          <button onClick={logOut} className='ml-auto flex items-center justify-center mt-8 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-8 py-3 rounded-lg shadow-md'>
+            <img src="https://res.cloudinary.com/dwrbwds1e/image/upload/v1778602138/logout_ns8yne.png" className='size-5 invert brightness-200' alt="" />
+            <span className='text-lg ml-2'>Log Out</span>
+            </button>
           </div>
 
         </div>
