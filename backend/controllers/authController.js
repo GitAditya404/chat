@@ -121,7 +121,7 @@ export const loginUser = async (req,res) => {
             email : zod.string().email(),
             password : zod.string()
     })
-
+    console.log("login request came")
 
     const result = bodySchema.safeParse(req.body)
     if(!result.success) {

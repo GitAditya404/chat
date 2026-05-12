@@ -403,98 +403,98 @@ const Room = () => {
 
     </div>
 
-{/* videoCall Section */}
-{isCalling && (
-  <div className="fixed inset-0 bg-[#020617] flex flex-col z-50">
+    {/* videoCall Section */}
+    {isCalling && (
+      <div className="fixed inset-0 bg-[#020617] flex flex-col z-50">
 
-    {/* Top bar */}
-    <div className="  px-6 py-4 bg-[#0f172a] shadow-md">
-      <h2 className="text-white text-lg font-semibold">
-        Video Call
-      </h2>
+        {/* Top bar */}
+        <div className="  px-6 py-4 bg-[#0f172a] shadow-md">
+          <h2 className="text-white text-lg font-semibold">
+            Video Call
+          </h2>
 
-    </div>
+        </div>
 
-    {/* Video Grid */}
-    <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 justify-center items-center">
+        {/* Video Grid */}
+        <div className="flex-1 flex flex-col md:flex-row gap-4 p-4 justify-center items-center">
 
-      {/* My Video (Floating on mobile, side on desktop) */}
-      <div className="relative w-40 h-32 md:w-1/3 md:h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
-        <video
-          ref={myVideoRef}
-          autoPlay
-          muted
-          className="w-full h-full object-cover"
-        />
-        <span className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-2 py-1 rounded">
-          You
-        </span>
+          {/* My Video (Floating on mobile, side on desktop) */}
+          <div className="relative w-full h-[40vh] md:w-1/3 md:h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
+            <video
+              ref={myVideoRef}
+              autoPlay
+              muted
+              className="w-full h-full object-cover"
+            />
+            <span className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-2 py-1 rounded">
+              You
+            </span>
+          </div>
+
+          {/* Remote Video (Main) */}
+          <div className="relative border w-full h-[40vh] md:w-1/3 md:h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
+            <video
+              ref={remoteVideoRef}
+              autoPlay
+              className="w-full h-full object-cover"
+            />
+            <span className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded">
+              Remote User
+            </span>
+          </div>
+
+
+        </div>
+
+        {/* Controls */}
+        <div className="bg-[#0f172a] p-4 flex justify-center items-center gap-6">
+
+          {/* Mic */}
+          <button
+            onClick={micToggle}
+            className={`p-4 rounded-full transition ${
+              muteMic ? "bg-red-500" : "bg-gray-700 hover:bg-gray-600"
+            }`}
+          >
+            <img
+              className="w-6 h-6 invert"
+              src={
+                muteMic
+                  ? "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064901/noMic_phbi3e.png"
+                  : "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064900/mic_ywshsj.png"
+              }
+              alt=""
+            />
+          </button>
+
+          {/* Video */}
+          <button
+            onClick={videoToggle}
+            className={`p-4 rounded-full transition ${
+              muteVideo ? "bg-red-500" : "bg-gray-700 hover:bg-gray-600"
+            }`}
+          >
+            <img
+              className="w-6 h-6 invert"
+              src={
+                muteVideo
+                  ? "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064881/noVideo_trqyhy.png"
+                  : "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778063889/videoCall_pykb69.png"
+              }
+              alt=""
+            />
+          </button>
+
+          {/* End Call Button */}
+          <button
+            onClick={endCall}
+            className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full text-white font-semibold shadow-lg"
+          >
+            End
+          </button>
+        </div>
       </div>
-
-      {/* Remote Video (Main) */}
-      <div className="relative border w-full md:w-1/3 h-[60vh] bg-black rounded-2xl overflow-hidden shadow-lg">
-        <video
-          ref={remoteVideoRef}
-          autoPlay
-          className="w-full h-full object-cover"
-        />
-        <span className="absolute bottom-3 left-3 text-white text-sm bg-black/50 px-3 py-1 rounded">
-          Remote User
-        </span>
-      </div>
-
-
-    </div>
-
-    {/* Controls */}
-    <div className="bg-[#0f172a] p-4 flex justify-center items-center gap-6">
-
-      {/* Mic */}
-      <button
-        onClick={micToggle}
-        className={`p-4 rounded-full transition ${
-          muteMic ? "bg-red-500" : "bg-gray-700 hover:bg-gray-600"
-        }`}
-      >
-        <img
-          className="w-6 h-6 invert"
-          src={
-            muteMic
-              ? "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064901/noMic_phbi3e.png"
-              : "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064900/mic_ywshsj.png"
-          }
-          alt=""
-        />
-      </button>
-
-      {/* Video */}
-      <button
-        onClick={videoToggle}
-        className={`p-4 rounded-full transition ${
-          muteVideo ? "bg-red-500" : "bg-gray-700 hover:bg-gray-600"
-        }`}
-      >
-        <img
-          className="w-6 h-6 invert"
-          src={
-            muteVideo
-              ? "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778064881/noVideo_trqyhy.png"
-              : "https://res.cloudinary.com/dwrbwds1e/image/upload/v1778063889/videoCall_pykb69.png"
-          }
-          alt=""
-        />
-      </button>
-
-      {/* End Call Button */}
-      <button
-        onClick={endCall}
-        className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full text-white font-semibold shadow-lg"
-      >
-        End
-      </button>
-    </div>
-  </div>
-)}
+    )}
   </>
 )
 }
