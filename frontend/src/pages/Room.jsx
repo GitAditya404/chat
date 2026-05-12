@@ -285,7 +285,7 @@ const Room = () => {
   
   return (
   <>
-    <div className="h-screen bg-[#0f172a] flex flex-col">
+    <div className="h-screen bg-[#090F21] flex flex-col">
 
       {/* Header */}
       <div className="h-16  bg-[#1e293b] flex items-center px-6 shadow-md">
@@ -390,13 +390,13 @@ const Room = () => {
             ref={inputRef}
             type="text"
             placeholder="Type a message..."
-            className="flex-1 h-12 rounded-full px-5 outline-none bg-white text-black placeholder-gray-500"
+            className="flex-1 h-12 rounded-lg px-5 outline-none bg-[#101528]  placeholder-gray-500 text-white"
           />
           <button
             onClick={clickHandler}
-            className="bg-blue-500 hover:bg-blue-600 transition cursor-pointer px-6 rounded-full text-white font-medium"
+            className="bg-blue-600 hover:bg-blue-900 transition cursor-pointer px-5 rounded-full text-white font-medium"
           >
-            Send
+            <img src="https://res.cloudinary.com/dwrbwds1e/image/upload/v1778601677/paper-plane_bekhdo.png"  className='size-6 invert brightness-200' alt="" />
           </button>
         </div>
       </div>
